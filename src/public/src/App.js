@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom'
 import { BrowserRouter, Route, Link, Switch } from 'react-router-dom'
 import Nav from './Nav'
 import ContentProvider from './ContentProvider'
+import ContentProviderAdd from './ContentProviderAdd'
 import './index.styl'
 
 class App extends React.Component {
@@ -21,8 +22,16 @@ class App extends React.Component {
 					<Route path="/" exact render={() => (
 						<Home />
 					)} />
-					<Route path="/content-provider" render={() => (
-						<ContentProvider />
+					<Route path="/content-provider" render={({ match: {url} }) => (
+						<div>
+							{console.log('url', url)}
+							<Route exact path={`${url}/`} render={() => (
+								<ContentProvider />
+							)}/>
+							<Route path={`${url}/add`} render={() => (
+								<ContentProviderAdd />
+							)}/>
+						</div>
 					)}/>
 				</Switch>
 			</BrowserRouter>

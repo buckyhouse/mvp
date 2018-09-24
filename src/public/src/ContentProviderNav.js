@@ -31,18 +31,11 @@ class ContentProviderNav extends React.Component {
 		                	<Link className={this.props.activePage == 'dashboard' ? 'nav-link active' : 'nav-link'} to="/content-provider">Dashboard</Link>
 						</li>
                         <li className="nav-item">
-		                	<Link className="nav-link" to="/content-provider/add">Add Content</Link>
+		                	<Link className={this.props.activePage == 'add' ? 'nav-link active' : 'nav-link'} to="/content-provider/add">Add Content</Link>
 						</li>
                         <li className="nav-item">
-		                	<Link className="nav-link" to="/content-provider/edit">Edit Content</Link>
-						</li>
-                        <li className="nav-item">
-		                	<Link className="nav-link" to="/content-provider/delete">Delete Content</Link>
-						</li>
-                        <li className="nav-item">
-                            <Link className="nav-link" to="/content-provider">Content Provider</Link>
+                            <Link className="nav-link" to="/">Log out</Link>
                         </li>
-		                <div className="user-address">{this.state.account}</div>
 					</ul>
 				</div>
 			</nav>
