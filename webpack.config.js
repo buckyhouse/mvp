@@ -2,9 +2,9 @@ const path = require('path')
 const htmlPlugin = require('html-webpack-plugin')
 
 module.exports = {
-    entry: ['babel-polyfill', path.join(__dirname, 'src', 'App.js')],
+    entry: ['babel-polyfill', path.join(__dirname, 'src', 'public', 'src', 'App.js')],
     output: {
-        path: path.join(__dirname, 'dist'),
+        path: path.join(__dirname, 'src', 'public', 'dist'),
         filename: 'build.js'
     },
     module: {
@@ -29,7 +29,7 @@ module.exports = {
     },
     plugins: [new htmlPlugin({
         title: "Bucky Platform",
-        template: './src/index.ejs',
+        template: './src/public/src/index.ejs',
         hash: true
     })]
 }
