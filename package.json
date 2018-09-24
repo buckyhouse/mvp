@@ -4,7 +4,7 @@
   "description": "",
   "main": "App.js",
   "scripts": {
-    "start": "http-server dist/",
+    "start": "node src/server",
     "install": "npm i -S babel-core babel-loader babel-polyfill babel-preset-env babel-preset-react babel-require css-loader html-webpack-plugin react react-dom stylus style-loader stylus-loader webpack"
   },
   "keywords": [],
@@ -17,7 +17,9 @@
     "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
     "babel-require": "^1.0.1",
+    "body-parser": "^1.18.3",
     "css-loader": "^0.28.11",
+    "express": "^4.16.3",
     "html-webpack-plugin": "^3.2.0",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
