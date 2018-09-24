@@ -1,0 +1,30 @@
+{
+  "name": "airdrop-erc20",
+  "version": "1.0.0",
+  "description": "",
+  "main": "App.js",
+  "scripts": {
+    "start": "http-server dist/",
+    "install": "npm i -S babel-core babel-loader babel-polyfill babel-preset-env babel-preset-react babel-require css-loader html-webpack-plugin react react-dom stylus style-loader stylus-loader webpack"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.5",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-react": "^6.24.1",
+    "babel-require": "^1.0.1",
+    "css-loader": "^0.28.11",
+    "html-webpack-plugin": "^3.2.0",
+    "react": "^16.5.2",
+    "react-dom": "^16.5.2",
+    "style-loader": "^0.21.0",
+    "stylus": "^0.54.5",
+    "stylus-loader": "^3.0.2",
+    "web3": "^1.0.0-beta.34",
+    "webpack": "^4.19.1"
+  }
+}
