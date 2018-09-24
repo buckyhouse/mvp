@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import Web3 from 'web3'
+import { Link } from 'react-router-dom'
 
 class Nav extends React.Component {
 	constructor (props) {
@@ -21,7 +22,7 @@ class Nav extends React.Component {
 	render () {
 		return (
 			<nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-				<a className="navbar-brand" href="#">BuckyHouse</a>
+				<Link className="navbar-brand" to="/">BuckyHouse</Link>
 				<button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
 				  <span className="navbar-toggler-icon"></span>
 				</button>
@@ -81,7 +82,10 @@ class Nav extends React.Component {
 						<li className="nav-item">
 		                	<a className="nav-link" href="#">Sign Up / Login</a>
 						</li>
-		                <div className="color-grey">{this.state.account}</div>
+						{/* Temporary button to test the content provider dashboard */}
+						<li className="nav-item">
+		                	<Link className="nav-link" to="/content-provider">Content Provider</Link>
+						</li>
 					</ul>
 				</div>
 			</nav>

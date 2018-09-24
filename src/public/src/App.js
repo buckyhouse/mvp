@@ -1,6 +1,8 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import { BrowserRouter, Route, Link, Switch } from 'react-router-dom'
 import Nav from './Nav'
+import ContentProvider from './ContentProvider'
 import './index.styl'
 
 class App extends React.Component {
@@ -8,7 +10,28 @@ class App extends React.Component {
 		super()
 	}
 
+	redirectTo(history, location) {
+		history.push(location)
+	}
+
 	render () {
+		return (
+			<BrowserRouter>
+				<Switch>
+					<Route path="/" exact render={() => (
+						<Home />
+					)} />
+					<Route path="/content-provider" render={() => (
+						<ContentProvider />
+					)}/>
+				</Switch>
+			</BrowserRouter>
+		)
+	}
+}
+
+class Home extends React.Component {
+	render() {
 		return (
 			<div>
 				<Nav />
