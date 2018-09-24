@@ -79,7 +79,7 @@ class Nav extends React.Component {
 							 </div>
 						</li>
 						<li className="nav-item">
-		                	<a className="nav-link" href="#">Sign Up</a>
+		                	<a className="nav-link" href="#">Sign Up / Login</a>
 						</li>
 		                <div className="color-grey">{this.state.account}</div>
 					</ul>
