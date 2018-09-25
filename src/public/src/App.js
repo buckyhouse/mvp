@@ -19,20 +19,15 @@ class App extends React.Component {
 		return (
 			<BrowserRouter>
 				<Switch>
-					<Route path="/" exact render={() => (
+					<Route exact path="/" render={() => (
 						<Home />
 					)} />
-					<Route path="/content-provider" render={({ match: {url} }) => (
-						<div>
-							{console.log('url', url)}
-							<Route exact path={`${url}/`} render={() => (
-								<ContentProvider />
-							)}/>
-							<Route path={`${url}/add`} render={() => (
-								<ContentProviderAdd />
-							)}/>
-						</div>
-					)}/>
+					<Route path="/content-provider/add" render={() => (
+						<ContentProviderAdd />
+					)} />
+					<Route path="/content-provider" render={() => (
+						<ContentProvider />
+					)} />
 				</Switch>
 			</BrowserRouter>
 		)

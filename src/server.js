@@ -17,13 +17,14 @@ app.use('*', (req, res, next) => {
     next()
 })
 
-app.get('/:mainUrl/*', (req, res) => {
-    console.log(`Redirecting ${req.originalUrl} to /${req.params.mainUrl}`)
-    return res.redirect(`/${req.params.mainUrl}`)
-})
-
 app.post('/upload-file', (req, res) => {
     functions.uploadFile(req, res)
+})
+
+// Send the build file for sub-urls
+app.get('*/build.js', (req, res) => {
+    console.log(req.originalUrl)
+    return res.sendFile(path.join(__dirname, 'public/dist/build.js'))
 })
 
 // To send the index

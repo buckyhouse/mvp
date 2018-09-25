@@ -42,57 +42,65 @@ class ContentProviderAdd extends React.Component {
                 <ContentProviderNav activePage='add'/>
 
                 <div className="content-provider-container">
-                    <h2>Upload a new file</h2>
-                    <br/>
-                    <form>
-                        <div className="form-group">
-                            <input onChange={event => { this.setState({ title: event.target.value })}} type="text" className="form-control" aria-describedby="inputTitle" placeholder="Title of your file"/>
-                        </div>
-
-                        <div className="form-group">
-                            <input onChange={event => { this.cleanMetaTags(event.target.value) }} type="text" className="form-control" aria-describedby="inputTags" placeholder="Meta tags separated by commas"/>
-                        </div>
-
-                        <div className="form-group">
-                            <textarea onChange={event => { this.setState({description: event.target.value}) }} type="text" className="form-control" aria-describedby="inputTitle" placeholder="File description"></textarea>
-                        </div>
-
-                        <div className="custom-file">
-                          <input onChange={event => {
-                              this.setState({files: event.target.files})
-                              this.refs.fileLabel.innerHTML = event.target.files[0].name
-                          }} type="file" className="custom-file-input" id="validatedCustomFile" required />
-                          <label ref="fileLabel" className="custom-file-label" htmlFor="validatedCustomFile">Choose file...</label>
-                          <div className="invalid-feedback">Example invalid custom file feedback</div>
+                    <div className="container">
+                        <div className="row">
+                            <h2>Upload a new file</h2>
                         </div>
 
                         <br/>
-                        <br/>
 
-                        <div className="choose-advertiser">
-                            <h4>Choose the advertiser</h4>
-                            <div className="container">
-                                <div className="row">
-                                    <Advertiser />
-                                    <Advertiser />
-                                    <Advertiser />
-                                    <Advertiser />
-                                    <Advertiser />
-                                    <Advertiser />
-                                    <Advertiser />
-                                    <Advertiser />
-                                    <Advertiser />
-                                    <Advertiser />
-                                    <Advertiser />
+                        <div className="row">
+                            <form>
+                                <div className="form-group">
+                                    <input onChange={event => { this.setState({ title: event.target.value })}} type="text" className="form-control" aria-describedby="inputTitle" placeholder="Title of your file"/>
                                 </div>
-                            </div>
+
+                                <div className="form-group">
+                                    <input onChange={event => { this.cleanMetaTags(event.target.value) }} type="text" className="form-control" aria-describedby="inputTags" placeholder="Meta tags separated by commas"/>
+                                </div>
+
+                                <div className="form-group">
+                                    <textarea onChange={event => { this.setState({description: event.target.value}) }} type="text" className="form-control" aria-describedby="inputTitle" placeholder="File description"></textarea>
+                                </div>
+
+                                <div className="custom-file">
+                                  <input onChange={event => {
+                                      this.setState({files: event.target.files})
+                                      this.refs.fileLabel.innerHTML = event.target.files[0].name
+                                  }} type="file" className="custom-file-input" id="validatedCustomFile" required />
+                                  <label ref="fileLabel" className="custom-file-label" htmlFor="validatedCustomFile">Choose file...</label>
+                                  <div className="invalid-feedback">Example invalid custom file feedback</div>
+                                </div>
+
+                                <br/>
+                                <br/>
+
+                                <div className="choose-advertiser">
+                                    <h4>Choose the advertiser</h4>
+                                    <div className="container">
+                                        <div className="row">
+                                            <Advertiser />
+                                            <Advertiser />
+                                            <Advertiser />
+                                            <Advertiser />
+                                            <Advertiser />
+                                            <Advertiser />
+                                            <Advertiser />
+                                            <Advertiser />
+                                            <Advertiser />
+                                            <Advertiser />
+                                            <Advertiser />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <br/>
+                                <br/>
+
+                                <button className="btn btn-primary" type="button" onClick={() => { this.uploadFile() }}>Upload Now</button>
+                            </form>
                         </div>
-
-                        <br/>
-                        <br/>
-
-                        <button className="btn btn-primary" type="button" onClick={() => { this.uploadFile() }}>Upload Now</button>
-                    </form>
+                    </div>
                 </div>
             </div>
         )
@@ -101,7 +109,7 @@ class ContentProviderAdd extends React.Component {
 
 function Advertiser(props) {
     return (
-        <div>
+        <div className="advertiser-block" onClick={() => alert('hi')}>
             <b>Advertiser name</b>
             <p>Pays 15 BUCKY per 1000 downloads</p>
         </div>
