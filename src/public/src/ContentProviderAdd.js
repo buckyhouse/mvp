@@ -23,7 +23,10 @@ class ContentProviderAdd extends React.Component {
     async uploadFile() {
         const data = new FormData()
         data.append('file', this.state.files[0])
-        data.append('stateObject', JSON.stringify(this.state))
+        let stateCopy = Object.assign({}, this.state)
+        delete stateCopy.files
+        stateCopy.fileName = this.state.files[0].name
+        data.append('stateObject', JSON.stringify(stateCopy))
 
         // It's important to not setup the 'content-type': 'multipart/form-data' header because fetch sets up the right version
         const response = await fetch('http://localhost:8123/upload-file', {
@@ -138,7 +141,6 @@ class ContentProviderAdd extends React.Component {
 function Advertiser(props) {
     return (
         <div id={props.id} className="advertiser-block" onClick={e => {
-            console.log(`imgs/logo${props.id}.png`)
             document.querySelectorAll('.advertiser-block.selected').forEach(element => {
                 element.className = 'advertiser-block'
             })
