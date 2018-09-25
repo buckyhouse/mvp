@@ -3,6 +3,41 @@ import ContentProviderNav from './ContentProviderNav'
 
 // This is the dashboard of the content provider
 class ContentProviderAdd extends React.Component {
+    constructor() {
+        super()
+        this.state = {
+            title: '',
+            tags: '',
+            description: '',
+            files: ''
+        }
+    }
+
+    cleanMetaTags(tags) {
+        console.log('tags before', tags)
+        tags = tags.replace(/\s*,\s*/g, ',')
+        tags = tags.replace(/,+/g,",").replace(/^,*/, "");
+        console.log('tags after', tags)
+        this.setState({ tags })
+    }
+
+    async uploadFile() {
+        const data = new FormData()
+        data.append('file', this.state.files[0])
+        data.append('title', this.state.title)
+        data.append('description', this.state.description)
+        data.append('tags', this.state.tags)
+
+        // It's important to not setup the 'content-type': 'multipart/form-data' header because fetch sets up the right version
+        const response = await fetch('http://localhost:8123/upload-file', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json'
+            },
+            body: data
+        })
+    }
+
     render() {
         return (
             <div>
@@ -13,32 +48,54 @@ class ContentProviderAdd extends React.Component {
                     <br/>
                     <form>
                         <div className="form-group">
-                            <input type="text" className="form-control" aria-describedby="inputTitle" placeholder="Title of your file"/>
+                            <input onChange={event => { this.setState({ title: event.target.value })}} type="text" className="form-control" aria-describedby="inputTitle" placeholder="Title of your file"/>
                         </div>
 
                         <div className="form-group">
-                            <input type="text" className="form-control" aria-describedby="inputTitle" placeholder="Meta tags separated by commas"/>
+                            <input onChange={event => { this.cleanMetaTags(event.target.value) }} type="text" className="form-control" aria-describedby="inputTags" placeholder="Meta tags separated by commas"/>
                         </div>
 
                         <div className="form-group">
-                            <textarea type="text" className="form-control" aria-describedby="inputTitle" placeholder="File description"></textarea>
+                            <textarea onChange={event => { this.setState({description: event.target.value}) }} type="text" className="form-control" aria-describedby="inputTitle" placeholder="File description"></textarea>
                         </div>
 
                         <div className="custom-file">
-                          <input type="file" className="custom-file-input" id="validatedCustomFile" required />
-                          <label className="custom-file-label" htmlFor="validatedCustomFile">Choose file...</label>
+                          <input onChange={event => {
+                              this.setState({files: event.target.files})
+                              this.refs.fileLabel.innerHTML = event.target.files[0].name
+                          }} type="file" className="custom-file-input" id="validatedCustomFile" required />
+                          <label ref="fileLabel" className="custom-file-label" htmlFor="validatedCustomFile">Choose file...</label>
                           <div className="invalid-feedback">Example invalid custom file feedback</div>
                         </div>
 
                         <br/>
                         <br/>
 
-                        <button className="btn btn-primary">Upload Now</button>
+                        <div className="choose-advertiser">
+                            <h4>Choose the advertiser</h4>
+                            <Advertiser />
+                            <Advertiser />
+                            <Advertiser />
+                        </div>
+
+                        <br/>
+                        <br/>
+
+                        <button className="btn btn-primary" type="button" onClick={() => { this.uploadFile() }}>Upload Now</button>
                     </form>
                 </div>
             </div>
         )
     }
+}
+
+function Advertiser(props) {
+    return (
+        <div>
+            <b>Advertiser name</b>
+            <p>Pays 15 BUCKY per 1000 downloads</p>
+        </div>
+    )
 }
 
 export default ContentProviderAdd
