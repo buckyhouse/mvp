@@ -37,6 +37,19 @@
     padding: 15px;
     box-shadow: 0 0 20px 0px #b1b1b1;
     cursor: pointer
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+
+    &:hover
+        background-color: var(--yellow)
+        opacity: 0.9
+
+    &.selected
+        background-color: var(--yellow)
 
 @media (min-width: 576px)
     .advertiser-block

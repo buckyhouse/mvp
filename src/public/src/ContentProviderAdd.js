@@ -9,7 +9,8 @@ class ContentProviderAdd extends React.Component {
             title: '',
             tags: '',
             description: '',
-            files: ''
+            files: '',
+            advertiserId: ''
         }
     }
 
@@ -22,9 +23,7 @@ class ContentProviderAdd extends React.Component {
     async uploadFile() {
         const data = new FormData()
         data.append('file', this.state.files[0])
-        data.append('title', this.state.title)
-        data.append('description', this.state.description)
-        data.append('tags', this.state.tags)
+        data.append('stateObject', JSON.stringify(this.state))
 
         // It's important to not setup the 'content-type': 'multipart/form-data' header because fetch sets up the right version
         const response = await fetch('http://localhost:8123/upload-file', {
@@ -79,17 +78,42 @@ class ContentProviderAdd extends React.Component {
                                     <h4>Choose the advertiser</h4>
                                     <div className="container">
                                         <div className="row">
-                                            <Advertiser />
-                                            <Advertiser />
-                                            <Advertiser />
-                                            <Advertiser />
-                                            <Advertiser />
-                                            <Advertiser />
-                                            <Advertiser />
-                                            <Advertiser />
-                                            <Advertiser />
-                                            <Advertiser />
-                                            <Advertiser />
+                                            <Advertiser
+                                                id="1"
+                                                updateAdvertiserSelected={id => this.setState({advertiserId: id})}
+                                            />
+                                            <Advertiser
+                                                id="2"
+                                                updateAdvertiserSelected={id => this.setState({advertiserId: id})}
+                                            />
+                                            <Advertiser
+                                                id="3"
+                                                updateAdvertiserSelected={id => this.setState({advertiserId: id})}
+                                            />
+                                            <Advertiser
+                                                id="4"
+                                                updateAdvertiserSelected={id => this.setState({advertiserId: id})}
+                                            />
+                                            <Advertiser
+                                                id="5"
+                                                updateAdvertiserSelected={id => this.setState({advertiserId: id})}
+                                            />
+                                            <Advertiser
+                                                id="6"
+                                                updateAdvertiserSelected={id => this.setState({advertiserId: id})}
+                                            />
+                                            <Advertiser
+                                                id="7"
+                                                updateAdvertiserSelected={id => this.setState({advertiserId: id})}
+                                            />
+                                            <Advertiser
+                                                id="8"
+                                                updateAdvertiserSelected={id => this.setState({advertiserId: id})}
+                                            />
+                                            <Advertiser
+                                                id="9"
+                                                updateAdvertiserSelected={id => this.setState({advertiserId: id})}
+                                            />
                                         </div>
                                     </div>
                                 </div>
@@ -109,7 +133,13 @@ class ContentProviderAdd extends React.Component {
 
 function Advertiser(props) {
     return (
-        <div className="advertiser-block" onClick={() => alert('hi')}>
+        <div id={props.id} className="advertiser-block" onClick={e => {
+            document.querySelectorAll('.advertiser-block.selected').forEach(element => {
+                element.className = 'advertiser-block'
+            })
+            ;(e.currentTarget.className == 'advertiser-block selected') ? e.currentTarget.className = 'advertiser-block' : e.currentTarget.className = 'advertiser-block selected'
+            props.updateAdvertiserSelected(props.id)
+        }}>
             <b>Advertiser name</b>
             <p>Pays 15 BUCKY per 1000 downloads</p>
         </div>
