@@ -14,10 +14,8 @@ class ContentProviderAdd extends React.Component {
     }
 
     cleanMetaTags(tags) {
-        console.log('tags before', tags)
-        tags = tags.replace(/\s*,\s*/g, ',')
-        tags = tags.replace(/,+/g,",").replace(/^,*/, "");
-        console.log('tags after', tags)
+        // Removes spaces between commas, multiple commas, commas at the beginning and commas at the end
+        tags = tags.replace(/\s*,\s*/g, ',').replace(/,+/g,",").replace(/^,*/, "").replace(/,*$/, "")
         this.setState({ tags })
     }
 
@@ -73,9 +71,21 @@ class ContentProviderAdd extends React.Component {
 
                         <div className="choose-advertiser">
                             <h4>Choose the advertiser</h4>
-                            <Advertiser />
-                            <Advertiser />
-                            <Advertiser />
+                            <div className="container">
+                                <div className="row">
+                                    <Advertiser />
+                                    <Advertiser />
+                                    <Advertiser />
+                                    <Advertiser />
+                                    <Advertiser />
+                                    <Advertiser />
+                                    <Advertiser />
+                                    <Advertiser />
+                                    <Advertiser />
+                                    <Advertiser />
+                                    <Advertiser />
+                                </div>
+                            </div>
                         </div>
 
                         <br/>
