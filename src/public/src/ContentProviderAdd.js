@@ -51,31 +51,35 @@ class ContentProviderAdd extends React.Component {
                         <div className="row">
                             <form>
                                 <div className="form-group">
-                                    <input onChange={event => { this.setState({ title: event.target.value })}} type="text" className="form-control" aria-describedby="inputTitle" placeholder="Title of your file"/>
+                                    <p>Title</p>
+                                    <input onChange={event => { this.setState({ title: event.target.value })}} type="text" className="form-control" aria-describedby="inputTitle" placeholder="Title of your file..."/>
                                 </div>
 
                                 <div className="form-group">
-                                    <input onChange={event => { this.cleanMetaTags(event.target.value) }} type="text" className="form-control" aria-describedby="inputTags" placeholder="Meta tags separated by commas"/>
+                                    <p>Meta tags</p>
+                                    <input onChange={event => { this.cleanMetaTags(event.target.value) }} type="text" className="form-control" aria-describedby="inputTags" placeholder="Meta tags separated by commas..."/>
                                 </div>
 
                                 <div className="form-group">
-                                    <textarea onChange={event => { this.setState({description: event.target.value}) }} type="text" className="form-control" aria-describedby="inputTitle" placeholder="File description"></textarea>
+                                    <p>Description</p>
+                                    <textarea onChange={event => { this.setState({description: event.target.value}) }} type="text" className="form-control" aria-describedby="inputTitle" placeholder="File description..."></textarea>
                                 </div>
 
+                                <p>File</p>
                                 <div className="custom-file">
-                                  <input onChange={event => {
+                                    <input onChange={event => {
                                       this.setState({files: event.target.files})
                                       this.refs.fileLabel.innerHTML = event.target.files[0].name
-                                  }} type="file" className="custom-file-input" id="validatedCustomFile" required />
-                                  <label ref="fileLabel" className="custom-file-label" htmlFor="validatedCustomFile">Choose file...</label>
-                                  <div className="invalid-feedback">Example invalid custom file feedback</div>
+                                    }} type="file" className="custom-file-input" id="validatedCustomFile" required />
+                                    <label ref="fileLabel" className="custom-file-label" htmlFor="validatedCustomFile">Choose file...</label>
+                                    <div className="invalid-feedback">Example invalid custom file feedback</div>
                                 </div>
 
                                 <br/>
                                 <br/>
 
                                 <div className="choose-advertiser">
-                                    <h4>Choose the advertiser</h4>
+                                    <p>Advertiser</p>
                                     <div className="container">
                                         <div className="row">
                                             <Advertiser
@@ -134,12 +138,14 @@ class ContentProviderAdd extends React.Component {
 function Advertiser(props) {
     return (
         <div id={props.id} className="advertiser-block" onClick={e => {
+            console.log(`imgs/logo${props.id}.png`)
             document.querySelectorAll('.advertiser-block.selected').forEach(element => {
                 element.className = 'advertiser-block'
             })
-            ;(e.currentTarget.className == 'advertiser-block selected') ? e.currentTarget.className = 'advertiser-block' : e.currentTarget.className = 'advertiser-block selected'
+            e.currentTarget.className = 'advertiser-block selected'
             props.updateAdvertiserSelected(props.id)
         }}>
+            <img src={`imgs/logo${props.id}.png`} />
             <b>Advertiser name</b>
             <p>Pays 15 BUCKY per 1000 downloads</p>
         </div>

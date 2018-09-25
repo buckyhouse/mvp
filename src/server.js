@@ -9,6 +9,7 @@ const port = 8123
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(express.static(path.join(__dirname, 'public', 'dist')))
+app.use(express.static(path.join(__dirname, 'public', 'dist', 'imgs')))
 app.use(fileUpload())
 
 // Logger middleware
@@ -25,6 +26,11 @@ app.post('/upload-file', (req, res) => {
 app.get('*/build.js', (req, res) => {
     console.log(req.originalUrl)
     return res.sendFile(path.join(__dirname, 'public/dist/build.js'))
+})
+
+// Send the build file for sub-urls
+app.get('*/imgs/:image', (req, res) => {
+    return res.sendFile(path.join(__dirname, 'public/dist/imgs', req.params.image))
 })
 
 // To send the index

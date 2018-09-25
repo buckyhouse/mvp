@@ -32,28 +32,38 @@
 
 .advertiser-block
     width: 100%
-    border-radius: 10px;
-    margin: 5px;
-    padding: 15px;
-    box-shadow: 0 0 20px 0px #b1b1b1;
+    border-radius: 10px
+    margin: 5px
+    padding: 15px
+    box-shadow: 0 0 20px 0px #b1b1b1
     cursor: pointer
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
+    -webkit-touch-callout: none
+    -webkit-user-select: none
+    -khtml-user-select: none
+    -moz-user-select: none
+    -ms-user-select: none
+    user-select: none
+    text-align: center
 
     &:hover
-        background-color: var(--yellow)
+        background-color: var(--primary)
         opacity: 0.9
+        color: white
 
     &.selected
-        background-color: var(--yellow)
+        background-color: var(--primary)
+        color: white
+
+    img
+        max-width: 200px
 
 @media (min-width: 576px)
     .advertiser-block
         width: calc(50% - 10px)
+
+@media (min-width: 768px)
+    .advertiser-block b
+        display: block
 
 @media (min-width: 992px)
     .advertiser-block
