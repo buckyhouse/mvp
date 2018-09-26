@@ -1,5 +1,6 @@
 import React from 'react'
 import ContentProviderNav from './ContentProviderNav'
+import config from './config'
 
 // This is the dashboard of the content provider
 class ContentProviderAdd extends React.Component {
@@ -28,8 +29,12 @@ class ContentProviderAdd extends React.Component {
         stateCopy.fileName = this.state.files[0].name
         data.append('stateObject', JSON.stringify(stateCopy))
 
+        let uploadUrl
+        if(window.location.origin == config.productionDomain) uploadUrl = config.productionDomain
+        else uploadUrl = config.developmentDomain
+
         // It's important to not setup the 'content-type': 'multipart/form-data' header because fetch sets up the right version
-        const response = await fetch('http://localhost:8123/upload-file', {
+        const response = await fetch(`${uploadUrl}/upload-file`, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json'
