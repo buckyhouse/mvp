@@ -39,5 +39,5 @@ app.get('*', (req, res) => {
 })
 
 app.listen(port, '0.0.0.0', () => {
-    console.log(`Server listening on 18.222.204.62:${port}`)
+    console.log(`Server listening on 13.59.158.99:${port}`)
 })
