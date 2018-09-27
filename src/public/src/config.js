@@ -1,5 +1,5 @@
 const config = {
-    productionDomain: 'http://18.222.204.62',
+    productionDomain: 'http://13.59.158.99',
     developmentDomain: 'http://localhost:8123'
 }
 
