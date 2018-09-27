@@ -224,20 +224,12 @@ function startIpfs() {
 }
 
 async function uploadFile(req, res) {
-    const body = JSON.parse(req.body.stateObject)
+    let body = JSON.parse(req.body.stateObject)
     const file = req.files.file
-
     const ipfsHash = await publishFileIpfs(file.data)
-
-    console.log('published hash', ipfsHash[0].hash)
-
     const pinResult = await ipfs.pin.add(ipfsHash[0].hash)
-
-    console.log('pin result', pinResult)
-
-    const pinLs = await ipfs.pin.ls()
-
-    console.log(pinLs)
+    console.log('published hash', ipfsHash[0].hash)
+    body.ipfs = ipfsHash[0].hash
     try {
         // Upload the file to IPFS and then add it to the ting
         await file.mv(path.join(__dirname, 'uploads', file.name))
