@@ -10,6 +10,7 @@ class ContentProviderAdd extends React.Component {
             title: '',
             tags: '',
             description: '',
+            category: '',
             files: '',
             advertiserId: ''
         }
@@ -71,6 +72,31 @@ class ContentProviderAdd extends React.Component {
                                 <div className="form-group">
                                     <p>Description</p>
                                     <textarea onChange={event => { this.setState({description: event.target.value}) }} type="text" className="form-control" aria-describedby="inputTitle" placeholder="File description..."></textarea>
+                                </div>
+
+                                <div className="form-group">
+                                    <p>Category</p>
+                                    <select className="form-control" onChange={event => { this.setState({category: event.target.value}) }}>
+                                        <option>Feature Films</option>
+                                        <option>Short Movies</option>
+                                        <option>Web Series</option>
+                                        <option>Documentary</option>
+                                        <option>Celebrity Content</option>
+                                        <option>Music Videos</option>
+                                        <option>Movie Music</option>
+                                        <option>Singer Specials</option>
+                                        <option>Spiritual Music</option>
+                                        <option>Instrumental Music</option>
+                                        <option>Animation Episodes</option>
+                                        <option>Animation Movies</option>
+                                        <option>Animation Clips</option>
+                                        <option>Animation Webseries</option>
+                                        <option>Historical</option>
+                                        <option>Mythological</option>
+                                        <option>Scientific</option>
+                                        <option>Comics</option>
+                                        <option>Moral Stories</option>
+                                    </select>
                                 </div>
 
                                 <p>File</p>

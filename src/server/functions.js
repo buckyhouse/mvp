@@ -18,12 +18,20 @@ async function start() {
     const database = await Mongo.connect(MongoUrl, { useNewUrlParser: true })
     db = database.db()
     await startIpfs()
+
+    pinningInterval()
+    setInterval(() => {
+        pinningInterval()
+    }, 43200e3)
 }
 
 function startIpfs() {
     return new Promise(resolve => {
         ipfs = new IPFS({
             start: true,
+            host: 'ipfs.infura.io',
+            port: 5001,
+            protocol: 'https',
             config: {
                 Addresses: {
                     Swarm: [
@@ -232,11 +240,14 @@ async function uploadFile(req, res) {
     body.ipfs = ipfsHash[0].hash
     try {
         // Upload the file to IPFS and then add it to the ting
-        await file.mv(path.join(__dirname, 'uploads', file.name))
+        if(file.name.substring(file.name.length - 2, file.name.length) != 'js') {
+            await file.mv(path.join(__dirname, 'uploads', file.name))
+        }
         await db.collection('ipfsFiles').insertOne(body)
     } catch(e) {
         return res.status(333).json({success: false, msg: 'There was an error uploading the file, try again', error: e})
     }
+    console.log('sending correct response')
     return res.status(200).json({success: true})
 }
 
@@ -247,6 +258,21 @@ function publishFileIpfs(file) {
             new ipfs.types.Buffer(file)
         )
         resolve(fileHashAddress)
+    })
+}
+
+// To pin all the files every 12 hours
+async function pinningInterval() {
+    console.log('Starting to pin')
+    const hashes = await db.collection('ipfsFiles').find({
+        ipfs: {
+            $exists: true
+        }
+    }).project({ipfs: 1, _id: 0}).toArray()
+
+    hashes.forEach(async hash => {
+        const pinResult = await ipfs.pin.add(hash.ipfs)
+        console.log('Pinned', hash.ipfs)
     })
 }
 
