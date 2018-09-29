@@ -2,6 +2,7 @@ const Mongo = require('mongodb').MongoClient
 const path = require('path')
 const IPFS = require('ipfs')
 const keys = require('./secrets/secrets.js').keys
+const cp = require('child_process')
 const MongoUrl = keys.MongoUrl
 let db = {}
 
@@ -231,6 +232,16 @@ function startIpfs() {
     })
 }
 
+function generateSnapshot(videoPathAndName, snapshotPathAndName) {
+    return new Promise((resolve, reject) => {
+        cp.exec(`ffmpeg -y -ss 00:00:05 -i "${videoPathAndName}" -vframes 1 "${snapshotPathAndName}"`, (err, stdout, stderr) => {
+              // Could not generate snapshot
+              if(err) return reject(err);
+              return resolve();
+        })
+    })
+}
+
 async function uploadFile(req, res) {
     let body = JSON.parse(req.body.stateObject)
     const file = req.files.file
@@ -238,11 +249,30 @@ async function uploadFile(req, res) {
     const pinResult = await ipfs.pin.add(ipfsHash[0].hash)
     console.log('published hash', ipfsHash[0].hash)
     body.ipfs = ipfsHash[0].hash
+
+    // If the file is a .mov or .mp4 generate a snapshot
+    file.name = file.name.replace(' ', '-')
+
     try {
         // Upload the file to IPFS and then add it to the ting
         if(file.name.substring(file.name.length - 2, file.name.length) != 'js') {
             await file.mv(path.join(__dirname, 'uploads', file.name))
         }
+
+        const fileExtension = file.name.substring(file.name.length - 3, file.name.length)
+        const videoPathAndName = path.join(__dirname, '/uploads', file.name)
+        let snapshotPathAndName = path.join(__dirname, '/snapshots', file.name)
+        try {
+            if(fileExtension == 'mov') {
+                snapshotPathAndName = snapshotPathAndName.replace(/(\.mov)+/, '.jpg')
+            } else if(fileExtension == 'mp4') {
+                snapshotPathAndName = snapshotPathAndName.replace(/(\.mp4)+/, '.jpg')
+            }
+            await generateSnapshot(videoPathAndName, snapshotPathAndName)
+        } catch(e) {
+            console.log('Could not generate snapshot', e)
+        }
+
         await db.collection('ipfsFiles').insertOne(body)
     } catch(e) {
         return res.status(333).json({success: false, msg: 'There was an error uploading the file, try again', error: e})
