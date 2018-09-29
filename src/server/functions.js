@@ -1,4 +1,5 @@
 const Mongo = require('mongodb').MongoClient
+const ObjectID = require('mongodb').ObjectID
 const path = require('path')
 const IPFS = require('ipfs')
 const keys = require('./secrets/secrets.js').keys
@@ -242,6 +243,16 @@ function generateSnapshot(videoPathAndName, snapshotPathAndName) {
     })
 }
 
+// Publishes a file to the ipfs network and returns the hash address
+function publishFileIpfs(file) {
+    return new Promise(async (resolve, reject) => {
+        const fileHashAddress = await ipfs.files.add(
+            new ipfs.types.Buffer(file)
+        )
+        resolve(fileHashAddress)
+    })
+}
+
 async function uploadFile(req, res) {
     let body = JSON.parse(req.body.stateObject)
     const file = req.files.file
@@ -281,16 +292,6 @@ async function uploadFile(req, res) {
     return res.status(200).json({success: true})
 }
 
-// Publishes a file to the ipfs network and returns the hash address
-function publishFileIpfs(file) {
-    return new Promise(async (resolve, reject) => {
-        const fileHashAddress = await ipfs.files.add(
-            new ipfs.types.Buffer(file)
-        )
-        resolve(fileHashAddress)
-    })
-}
-
 // To pin all the files every 12 hours
 async function pinningInterval() {
     console.log('Starting to pin')
@@ -306,6 +307,31 @@ async function pinningInterval() {
     })
 }
 
+// Returns the number of files specified with req.query.c
+async function getFiles(req, res) {
+    // Returns a json with each file's data
+    const files = await db.collection('ipfsFiles').find({}, {
+        limit: parseInt(req.query.c)
+    }).toArray()
+
+    console.log(files)
+    res.send(files)
+}
+
+async function deleteFile(req, res) {
+    try {
+        const response = await db.collection('ipfsFiles').findOneAndDelete({
+            _id: ObjectID(req.query.id)
+        })
+    } catch(e) {
+        return res.status(333).json({success: false, msg: 'There was an error deleting the file, try again', error: e})
+    }
+    console.log('sending correct response')
+    return res.status(200).json({success: true})
+}
+
 module.exports = {
-    uploadFile
+    uploadFile,
+    getFiles,
+    deleteFile
 }

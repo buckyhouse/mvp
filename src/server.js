@@ -18,8 +18,16 @@ app.use('*', (req, res, next) => {
     next()
 })
 
+app.get('/get-files', (req, res) => {
+    functions.getFiles(req, res)
+})
+
 app.post('/upload-file', (req, res) => {
     functions.uploadFile(req, res)
+})
+
+app.get('/delete-file', (req, res) => {
+    functions.deleteFile(req, res)
 })
 
 // Send the build file for sub-urls

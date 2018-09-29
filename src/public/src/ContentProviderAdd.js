@@ -10,9 +10,10 @@ class ContentProviderAdd extends React.Component {
             title: '',
             tags: '',
             description: '',
-            category: '',
+            category: 'Feature Films', // Default category
             files: '',
-            advertiserId: ''
+            advertiserId: '',
+            status: ''
         }
     }
 
@@ -35,19 +36,40 @@ class ContentProviderAdd extends React.Component {
         else uploadUrl = config.developmentDomain
 
         // It's important to not setup the 'content-type': 'multipart/form-data' header because fetch sets up the right version
-        const response = await fetch(`${uploadUrl}/upload-file`, {
+        let response = await fetch(`${uploadUrl}/upload-file`, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json'
             },
             body: data
         })
+
+        response = await response.json()
+        if(response.success) {
+            scrollTo(0, 0)
+            this.setState({
+                status: 'File uploaded successfully'
+            })
+            this.refs.status.className = "status"
+        } else {
+            scrollTo(0, 0)
+            this.setState({
+                status: 'Error uploading the file, try again'
+            })
+            this.refs.status.className = "status"
+        }
+
+        setTimeout(() => {
+            this.refs.status.className = "status hidden"
+        }, 5e3)
     }
 
     render() {
         return (
             <div>
                 <ContentProviderNav activePage='add'/>
+
+                <div ref="status" className="status hidden">{this.state.status}</div>
 
                 <div className="content-provider-container">
                     <div className="container">
