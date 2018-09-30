@@ -18,7 +18,7 @@ class ContentProvider extends React.Component {
         let uploadUrl
         if(window.location.origin == config.productionDomain) uploadUrl = config.productionDomain
         else uploadUrl = config.developmentDomain
-        const response = await fetch(`${uploadUrl}/get-files?c=10`)
+        const response = await fetch(`${uploadUrl}/get-files?c=100`)
         let res = await response.json()
         let cards = res.map((file, i) => (
             <Card key={file._id} id={file._id} className="col-md" updateState={() => {
@@ -34,7 +34,7 @@ class ContentProvider extends React.Component {
                     advertiserId: file.advertiserId
                 }
                 this.props.editFile(this.props.history, data)
-            }} title={file.title} description={file.description} ipfs={file.ipfs} />
+            }} {...file} />
         ))
 
         this.setState({cards})
@@ -117,31 +117,47 @@ class ContentProvider extends React.Component {
     }
 }
 
-function Card(props) {
-    return (
-        <div className="card-dashboard list-group-item list-group-item-action flex-column align-items-start">
-            <div className="d-flex w-100 justify-content-between">
-                <h5 className="col-md-8">{props.title}</h5>
-                <small className="col-md-4 text-right">3 days ago</small>
-            </div>
-            <p className="mb-1">{props.description}</p>
-            <div className="container no-space-left">
-                <div className="row">
-                    <a className="col-md-8" href={"https://gateway.ipfs.io/ipfs/" + props.ipfs} target="_blank">{props.ipfs}</a>
-                    <small className="col-md-2">253 downloads</small>
-                    <small className="col-md-2 bucky-small-text">50 BUCKY</small>
+class Card extends React.Component {
+    constructor(props) {
+        super(props)
+        console.log(this.props)
+    }
+
+    render() {
+        return (
+            <div className="card-dashboard list-group-item list-group-item-action flex-column align-items-start">
+                <div className="d-flex w-100 justify-content-between">
+                    <h5 className="col-md-8">{this.props.title}</h5>
+                    <small className="col-md-4 text-right">3 days ago</small>
+                </div>
+                <p className="mb-1">{this.props.description}</p>
+                <div className="container">
+                    <div className="row">
+                        <a className="col-md-8 padding-left-0" href={"https://gateway.ipfs.io/ipfs/" + this.props.ipfs} target="_blank">{this.props.ipfs}</a>
+                    </div>
+                    <div className="row">
+                        <p className="tags-dashboard">{'#' + this.props.tags.split(',').join(' #')}</p>
+                    </div>
+                    <div className="row">
+                        <p>{this.props.category}</p>
+                    </div>
+                    <div className="row">
+                        <small className="col-md-3 padding-left-0">253 downloads</small>
+                        <small className="col-md-3 padding-left-0 bucky-small-text">50 BUCKY</small>
+                        <small className="col-md-4 padding-left-0">Advertiser B</small>
+                    </div>
+                </div>
+                <div className="buttons-list">
+                    <button className="btn btn-outline-primary" onClick={() => {
+                        this.props.editFile()
+                    }}>Edit</button>
+                    <button className="btn btn-outline-secondary" data-toggle="modal" data-target="#delete-modal" onClick={() => {
+                        this.props.updateState()
+                    }}>Delete</button>
                 </div>
             </div>
-            <div className="buttons-list">
-                <button className="btn btn-outline-primary" onClick={() => {
-                    props.editFile()
-                }}>Edit</button>
-                <button className="btn btn-outline-secondary" data-toggle="modal" data-target="#delete-modal" onClick={() => {
-                    props.updateState()
-                }}>Delete</button>
-            </div>
-        </div>
-    )
+        )
+    }
 }
 
 export default ContentProvider
