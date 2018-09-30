@@ -26,6 +26,10 @@ app.post('/upload-file', (req, res) => {
     functions.uploadFile(req, res)
 })
 
+app.post('/edit-file', (req, res) => {
+    functions.editFile(req, res)
+})
+
 app.get('/delete-file', (req, res) => {
     functions.deleteFile(req, res)
 })

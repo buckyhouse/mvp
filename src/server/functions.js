@@ -314,7 +314,6 @@ async function getFiles(req, res) {
         limit: parseInt(req.query.c)
     }).toArray()
 
-    console.log(files)
     res.send(files)
 }
 
@@ -330,8 +329,81 @@ async function deleteFile(req, res) {
     return res.status(200).json({success: true})
 }
 
+async function editFile(req, res) {
+    let body = JSON.parse(req.body.stateObject)
+    let isEditingFiles = true
+
+    if(!req.files) isEditingFiles = false
+
+    // Upload a new file if that's the case
+    if(isEditingFiles) {
+        const file = req.files.file
+        const ipfsHash = await publishFileIpfs(file.data)
+        const pinResult = await ipfs.pin.add(ipfsHash[0].hash)
+        console.log('published hash', ipfsHash[0].hash)
+        body.ipfs = ipfsHash[0].hash
+
+        // If the file is a .mov or .mp4 generate a snapshot
+        file.name = file.name.replace(' ', '-')
+
+        try {
+            // Upload the file to IPFS and then add it to the ting
+            if(file.name.substring(file.name.length - 2, file.name.length) != 'js') {
+                await file.mv(path.join(__dirname, 'uploads', file.name))
+            }
+
+            const fileExtension = file.name.substring(file.name.length - 3, file.name.length)
+            const videoPathAndName = path.join(__dirname, '/uploads', file.name)
+            let snapshotPathAndName = path.join(__dirname, '/snapshots', file.name)
+            try {
+                if(fileExtension == 'mov') {
+                    snapshotPathAndName = snapshotPathAndName.replace(/(\.mov)+/, '.jpg')
+                } else if(fileExtension == 'mp4') {
+                    snapshotPathAndName = snapshotPathAndName.replace(/(\.mp4)+/, '.jpg')
+                }
+                await generateSnapshot(videoPathAndName, snapshotPathAndName)
+            } catch(e) {
+                console.log('Could not generate snapshot', e)
+            }
+        } catch (e) {
+            return res.status(333).json({success: false, msg: '#1 There was an error editing the file, try again', error: e})
+        }
+    }
+
+    // Then update the information in the database
+    try {
+        console.log('id', body._id)
+        console.log('body', body)
+        let updateChanges = {
+            title: body.title,
+            description: body.description,
+            category: body.category,
+            advertiserId: body.advertiserId,
+            tags: body.tags
+        }
+
+        if(isEditingFiles) {
+            updateChanges.ipfs = body.ipfs
+            updateChanges.fileName = body.fileName
+        }
+
+        await db.collection('ipfsFiles').updateOne({
+            _id: ObjectID(body._id)
+        }, {
+            $set: updateChanges
+        })
+    } catch (e) {
+        console.log('error', e)
+        return res.status(333).json({success: false, msg: '#2 There was an error updating the file, try again', error: e})
+    }
+
+    console.log('sending correct response')
+    return res.status(200).json({success: true})
+}
+
 module.exports = {
     uploadFile,
     getFiles,
-    deleteFile
+    deleteFile,
+    editFile
 }

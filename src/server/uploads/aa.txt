@@ -1,0 +1,16 @@
+I see that the webplayer is a must and the 3 advertising functions within the video are important.
+
+This is a big project and we don't know how we'll work together. Before commiting to the entire project with that budget, I'd like to separate the project in 4 milestones like the following with a 1 to 2 week period for each one, with separate payment for each one:
+
+1. Creation of the entire web app content provider functionality: 1 - 2 weeks 4.500 USD
+2. Creation of the entire web app node functionality: 1 - 2 weeks 4.500 USD
+3. Creation of the entire web app subscriber functionality: 1 - 2 weeks 4.500 USD
+4. Creation of the entire web app advertiser functionality: 1 - 2 weeks 4.500 USD
+
+So instead of paying for the entire project, I'll work on each section as an independent project in case anything goes bad like taking too much time for changes or whatever. That way you won't risk your entire budget on something that can't be done or is risky. Do you agree with this?
+
+If so, I can start to work on the first part "1. Creation of the entire content provider functionality: 1 - 2 weeks 4.500 USD" as soon as possible and then see how we work together. I prefer to get paid in BTC or ETH with the payment upfront before starting. We can write a contract with all the details so that we are on the same page.
+
+What do you think? Do you agree that separating the project in 4 milestones and working each one independently is a good idea to get to know how we work together before commiting too much? 
+
+If you agree I'll send you a list of the things that I'll create, the list of functionalities for the first milestone and when they should be completed.

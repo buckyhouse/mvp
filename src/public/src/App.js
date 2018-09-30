@@ -10,10 +10,15 @@ import './index.styl'
 class App extends React.Component {
 	constructor () {
 		super()
+		this.state = {
+			editFile: {}
+		}
 	}
 
 	redirectTo(history, location) {
-		history.push(location)
+		history.push({
+			pathname: location
+		})
 	}
 
 	render () {
@@ -24,10 +29,18 @@ class App extends React.Component {
 						<Home />
 					)} />
 					<Route path="/content-provider/add" render={() => (
-						<ContentProviderAdd />
+						<ContentProviderAdd editFile={this.state.editFile} />
 					)} />
-					<Route path="/content-provider" render={() => (
-						<ContentProvider />
+					<Route path="/content-provider" render={context => (
+						<ContentProvider
+							history={context.history}
+							editFile={(history, data) => {
+							this.setState({
+								editFile: data
+							}, () => {
+								this.redirectTo(history, '/content-provider/add')
+							})
+						}} />
 					)} />
 				</Switch>
 			</BrowserRouter>

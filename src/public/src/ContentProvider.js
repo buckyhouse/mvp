@@ -23,6 +23,17 @@ class ContentProvider extends React.Component {
         let cards = res.map((file, i) => (
             <Card key={file._id} id={file._id} className="col-md" updateState={() => {
                 this.setState({deleteId: file._id})
+            }} editFile={() => {
+                let data = {
+                    _id: file._id,
+                    title: file.title,
+                    tags: file.tags,
+                    description: file.description,
+                    category: file.category,
+                    file: file.ipfs,
+                    advertiserId: file.advertiserId
+                }
+                this.props.editFile(this.props.history, data)
             }} title={file.title} description={file.description} ipfs={file.ipfs} />
         ))
 
@@ -50,15 +61,12 @@ class ContentProvider extends React.Component {
 
         scrollTo(0, 0)
         this.refs.status.className = "status"
-
         setTimeout(() => {
             this.refs.status.className = "status hidden"
         }, 5e3)
-
         $('#delete-modal').on('hidden.bs.modal', () => {
             scrollTo(0, 0)
         })
-
         this.getFiles()
     }
 
@@ -125,8 +133,8 @@ function Card(props) {
                 </div>
             </div>
             <div className="buttons-list">
-                <button className="btn btn-outline-primary" data-toggle="modal" data-target="#delete-modal" onClick={() => {
-                    props.updateState()
+                <button className="btn btn-outline-primary" onClick={() => {
+                    props.editFile()
                 }}>Edit</button>
                 <button className="btn btn-outline-secondary" data-toggle="modal" data-target="#delete-modal" onClick={() => {
                     props.updateState()
