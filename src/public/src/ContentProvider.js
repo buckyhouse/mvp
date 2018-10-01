@@ -120,7 +120,6 @@ class ContentProvider extends React.Component {
 class Card extends React.Component {
     constructor(props) {
         super(props)
-        console.log(this.props)
     }
 
     render() {

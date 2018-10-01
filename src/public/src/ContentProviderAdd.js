@@ -19,7 +19,7 @@ class ContentProviderAdd extends React.Component {
     }
 
     componentDidMount() {
-        if(this.props.editFile) {
+        if(Object.keys(this.props.editFile).length > 0) {
             this.refs.title.value = this.props.editFile.title
             this.refs.tags.value = this.props.editFile.tags
             this.refs.description.value = this.props.editFile.description
