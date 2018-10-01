@@ -11,7 +11,7 @@ let data = {
     category: 'Short Movies',
     advertiserId: 1,
     fileName: 'example.mp4',
-    ipfs: 'QmWdhekgeYV6nieHBypJnB77nxAxrENHK12YCYB8UGdN97'
+    ipfs: 'QmWdhekgeYV6nieHBypJnB77nxAxrENHK12YCYB8UGdN97',
 }
 let numberOfCopies = 50
 
@@ -20,16 +20,29 @@ start()
 async function start() {
     const database = await Mongo.connect(MongoUrl, { useNewUrlParser: true })
     db = database.db()
-    uploadFakeData()
+    // await deleteAll()
+    await uploadFakeData()
 }
 
 async function uploadFakeData() {
     try {
         for(let i = 0; i < numberOfCopies; i++) {
+            console.log('Uploading file')
+            data.date = Date.now()
             await db.collection('ipfsFiles').insertOne(data, {
                 forceServerObjectId: true
             })
         }
+    } catch (e) {
+        console.log('Error:', e)
+    }
+    process.exit(0)
+}
+
+async function deleteAll() {
+    try {
+        await db.collection('ipfsFiles').drop()
+        console.log('Deleted all')
     } catch (e) {
         console.log('Error:', e)
     }

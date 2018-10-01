@@ -260,6 +260,7 @@ async function uploadFile(req, res) {
     const pinResult = await ipfs.pin.add(ipfsHash[0].hash)
     console.log('published hash', ipfsHash[0].hash)
     body.ipfs = ipfsHash[0].hash
+    body.date = Date.now()
 
     // If the file is a .mov or .mp4 generate a snapshot
     file.name = file.name.replace(' ', '-')
@@ -276,10 +277,11 @@ async function uploadFile(req, res) {
         try {
             if(fileExtension == 'mov') {
                 snapshotPathAndName = snapshotPathAndName.replace(/(\.mov)+/, '.jpg')
+                await generateSnapshot(videoPathAndName, snapshotPathAndName)
             } else if(fileExtension == 'mp4') {
                 snapshotPathAndName = snapshotPathAndName.replace(/(\.mp4)+/, '.jpg')
+                await generateSnapshot(videoPathAndName, snapshotPathAndName)
             }
-            await generateSnapshot(videoPathAndName, snapshotPathAndName)
         } catch(e) {
             console.log('Could not generate snapshot', e)
         }
@@ -312,7 +314,9 @@ async function getFiles(req, res) {
     // Returns a json with each file's data
     const files = await db.collection('ipfsFiles').find({}, {
         limit: parseInt(req.query.c)
-    }).toArray()
+    }).sort({date: -1}).toArray()
+
+    console.log('files', files)
 
     res.send(files)
 }
@@ -342,6 +346,7 @@ async function editFile(req, res) {
         const pinResult = await ipfs.pin.add(ipfsHash[0].hash)
         console.log('published hash', ipfsHash[0].hash)
         body.ipfs = ipfsHash[0].hash
+        body.date = Date.now()
 
         // If the file is a .mov or .mp4 generate a snapshot
         file.name = file.name.replace(' ', '-')
@@ -355,13 +360,15 @@ async function editFile(req, res) {
             const fileExtension = file.name.substring(file.name.length - 3, file.name.length)
             const videoPathAndName = path.join(__dirname, '/uploads', file.name)
             let snapshotPathAndName = path.join(__dirname, '/snapshots', file.name)
+
             try {
                 if(fileExtension == 'mov') {
                     snapshotPathAndName = snapshotPathAndName.replace(/(\.mov)+/, '.jpg')
+                    await generateSnapshot(videoPathAndName, snapshotPathAndName)
                 } else if(fileExtension == 'mp4') {
                     snapshotPathAndName = snapshotPathAndName.replace(/(\.mp4)+/, '.jpg')
+                    await generateSnapshot(videoPathAndName, snapshotPathAndName)
                 }
-                await generateSnapshot(videoPathAndName, snapshotPathAndName)
             } catch(e) {
                 console.log('Could not generate snapshot', e)
             }
@@ -372,8 +379,6 @@ async function editFile(req, res) {
 
     // Then update the information in the database
     try {
-        console.log('id', body._id)
-        console.log('body', body)
         let updateChanges = {
             title: body.title,
             description: body.description,

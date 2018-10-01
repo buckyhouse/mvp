@@ -1,0 +1,59 @@
+Ok after reading the details, here's my understanding of the 4 types of profiles and how the application will look like once completed:
+
+There will be an initial home page where the users will be able to login / register and select the type of user profile they want to create. Here's each profile:
+
+1. The content provider will upload content to the website so he will have a custom dashboard page with a function to upload content and see his past content alongside with some basic statistics. All controlled with his metamask account. The content provider will be paid in tokens depending on the views / downloads of his content. The features will be:
+
+- A custom dashboard to interact with his content
+- Upload content
+- View past uploaded content
+- Remove uploaded content
+- Statistics for each element. Views, downloads, tokens earned for each specific content and date uploaded
+- Payment in tokens with a button to extract those tokens to his account
+- A function to choose the type of payment he wants to receive with paid content and advertising content
+
+2. The node profile. The payment of the nodes will be 50% to the content providers 50% to the nodes at the beginning. We can change those numbers at any point. We will create a specific tool that the nodes will be able to download for setting up the configuration and to start distributing content while getting paid.
+
+- A downloadable tool to set up IPFS to distribute the content and get paid on any linux / windows or mac computer
+- A custom dashboard to interact with his account
+- A function to see the earnings
+- Statistics about what content has paid him how much
+- The state of his nodes
+- A view of the content hosted inside each IPFS node
+
+3. The subscriber profile. The most used type of account to see and interact with the content.
+
+- A custom dashboard page to see the content 
+- A search function to look for content on IPFS
+- A function to download the content
+- A function to manage his tokens for transfering them, doing allowances or exchange them with other users
+
+4. The advertiser. A type of profile where he gets paid in bucky coins based on the number of clicks and views of his ads.
+
+- A custom dashboard page to interact with his adverstising content
+- A function to upload clickable banner images of 3 types of sizes. We can add more sizes at any point 
+- A function to upload video ads
+- A function to select the type of payment he wants for his advertising data
+- Statistics like views, impressions, clicks and payments for each ad
+
+On top of that, we have to add the fact that the web app has to be re-designed as a desktop application which is not that complex but it requires time since the code is different for windows and mac. The design will be the same for the web application and for the desktop application.
+
+Questions:
+- We can't completely lock the content with a PIN if we are using IPFS because it's public unless it's a node, a node can lock the content. What we can do is to not show that content on the application so that it looks like it's not there for the content providers.
+- What do you mean by "A % shall vary between paid and free content uploaded by the content provider?" This means that the user will receive 2 sources of payment? One based on advertising views / clicks and the other based on a fixed payment?
+
+Summary:
+In total there are 4 mini-applications that have to be created to interact with IPFS and the bucky token. All decentralized. The problem is that I'll need at least 2 weeks per section to make sure it works as expected. It is way more complicated than I initially understood. So the total time would be 2 months now that the details are clear. 
+
+If I bring 2 extra developers with me, we can complete the entire platform in 1 month at 150€ per hour. Yes it's more time-intensive because the initial version was based on 1 application and what I see here is 4 different but related applications for each profile. Which is great but it takes time.
+
+Btw why is the time so restricted? We can do a far greater job by expanding the time of completion since in this kind of projects you end up with a lot of desired functionality that you would love to add but can't be done because of time. 
+
+If you give me 1 month, my team and I can complete this project with the features described above without losing quality.
+
+So the total price with my 2 team members will be 240 hours * 150€ which is 36,000€ total in 1 month. If I do it alone, I'll need 2 months and the cost will be 240 hours * 2 * 50€ = 24,000€ total in 2 months working alone. 
+
+Let me know your thoughts and the answers to the questions,
+
+Best regards,
+Merunas

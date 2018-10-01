@@ -1,0 +1,1 @@
+align navbar to the right in bootstrap: add the class "justify-content-end" to the div ".collapse"
