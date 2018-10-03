@@ -26,6 +26,10 @@ app.get('/get-account-type', (req, res) => {
     functions.getAccountType(req, res)
 })
 
+app.post('/register-new', (req, res) => {
+    functions.registerNew(req, res)
+})
+
 app.post('/upload-file', (req, res) => {
     functions.uploadFile(req, res)
 })

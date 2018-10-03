@@ -33,8 +33,13 @@ class App extends React.Component {
 		return (
 			<BrowserRouter>
 				<Switch>
-					<Route exact path="/" render={() => (
-						<Home />
+					<Route exact path="/" render={context => (
+						<Home
+							history={context.history}
+							redirectTo={(history, location) => {
+								this.redirectTo(history, location)
+							}}
+						/>
 					)} />
 					<Route path="/content-provider/add" render={() => (
 						<ContentProviderAdd editFile={this.state.editFile} />
@@ -43,12 +48,12 @@ class App extends React.Component {
 						<ContentProvider
 							history={context.history}
 							editFile={(history, data) => {
-							this.setState({
-								editFile: data
-							}, () => {
-								this.redirectTo(history, '/content-provider/add')
-							})
-						}} />
+								this.setState({
+									editFile: data
+								}, () => {
+									this.redirectTo(history, '/content-provider/add')
+								})
+							}} />
 					)} />
 					<Route path="/subscriber" render={() => (
 						<Subscriber />
@@ -59,8 +64,13 @@ class App extends React.Component {
 					<Route path="/advertiser" render={() => (
 						<Advertiser />
 					)} />
-					<Route path="/register" render={() => (
-						<Register />
+					<Route path="/register" render={context => (
+						<Register
+							history={context.history}
+							redirectTo={(history, location) => {
+								this.redirectTo(history, location)
+							}}
+						/>
 					)} />
 				</Switch>
 			</BrowserRouter>
@@ -93,7 +103,11 @@ class Home extends React.Component {
 	render() {
 		return (
 			<div>
-				<Nav />
+				<Nav
+					redirectTo={location => {
+						this.props.redirectTo(this.props.history, location)
+					}}
+				/>
 				<div className="container home-page-container">
 					<br/>
 					<br/>

@@ -19,12 +19,13 @@ class Register extends React.Component {
         }
     }
 
-    componentDidMount() {
-        if(window.web == undefined) {
+    async componentDidMount() {
+        if(window.web3 == undefined) {
             this.status('You must be connected to Metamask in Ropsten to register')
         } else {
-            this.refs.wallet.value = web3.eth.defaultAccount
-            this.setState({ wallet: web3.eth.defaultAccount })
+            const accounts = await web3.eth.getAccounts()
+            this.refs.wallet.value = accounts[0]
+            this.setState({ wallet: accounts[0] })
         }
     }
 
@@ -33,21 +34,46 @@ class Register extends React.Component {
             status: message
         })
         this.refs.status.className = "status"
+        scrollTo(0, 0)
         setTimeout(() => {
             this.refs.status.className = "status hidden"
         }, 5e3)
     }
 
-    registerButton() {
+    async registerButton() {
+        const data = new FormData()
+        data.append('data', JSON.stringify(this.state))
+
         if(this.state.firstName.length == 0) return this.status('You must set your first name')
         if(this.state.lastName.length == 0) return this.status('You must set your last name')
-        if(this.state.accountType.length == 0) return this.status('You must choose your account type')
         if(this.state.wallet.length == 0) return this.status('You must be connected to Metamask to set your wallet')
         if(this.state.gender.length == 0) return this.status('You must choose your gender')
+        if(this.state.accountType.length == 0) return this.status('You must choose your account type')
         if(this.state.email.length == 0) return this.status('You must set your email')
         if(this.state.phone.length == 0) return this.status('You must set your phone')
         if(this.state.country.length == 0) return this.status('You must set your country')
         if(this.state.city.length == 0) return this.status('You must set your city')
+
+        // Check if the email is properly formatted
+        if(!/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(this.state.email)) {
+            return this.status('The email is not properly formatted, please use a valid email')
+        }
+
+        let response = await fetch('/register-new', {
+            method: 'post',
+            body: data
+        })
+        response = await response.json()
+
+        if(response.success) {
+            this.status('Success! Your account was created')
+        } else {
+            this.status(response.msg)
+        }
+
+        setTimeout(() => {
+            this.props.redirectTo(this.props.history, '/')
+        }, 5e3)
     }
 
     render() {
@@ -66,7 +92,7 @@ class Register extends React.Component {
                         <br/>
 
                         <div className="row">
-                            <form>
+                            <form className="width-100">
                                 <div className="form-group">
                                     <p>First name</p>
                                     <input ref="firstName" onChange={event => { this.setState({ firstName: event.target.value })}} type="text" className="form-control" aria-describedby="inputTitle" placeholder="Your fist name..." />
@@ -79,28 +105,31 @@ class Register extends React.Component {
 
                                 <div className="form-group">
                                     <p>Your ethereum wallet (automatic)</p>
-                                    <input ref="wallet" type="text" className="form-control" readonly/>
+                                    <input ref="wallet" type="text" className="form-control" readOnly/>
                                 </div>
 
                                 <div className="form-group">
                                     <p>Gender</p>
 
-                                    <div class="custom-control custom-radio custom-control-inline">
-                                        <input type="radio" id="customRadioInline1" onChange={event => { this.setState({ gender: 'male' }) }} class="custom-control-input"/>
-                                        <label class="custom-control-label" for="customRadioInline1">Male</label>
+                                    <div className="custom-control custom-radio custom-control-inline">
+                                        <input type="radio" id="customRadioInline1" name="customRadioInline1" onChange={event => { this.setState({ gender: 'male' }) }} className="custom-control-input"/>
+                                        <label className="custom-control-label" htmlFor="customRadioInline1">Male</label>
                                     </div>
 
-                                    <div class="custom-control custom-radio custom-control-inline">
-                                        <input type="radio" id="customRadioInline2" onChange={event => { this.setState({ gender: 'female' }) }} class="custom-control-input"/>
-                                        <label class="custom-control-label" for="customRadioInline2">Female</label>
+                                    <div className="custom-control custom-radio custom-control-inline">
+                                        <input type="radio" id="customRadioInline2" name="customRadioInline1" onChange={event => { this.setState({ gender: 'female' }) }} className="custom-control-input"/>
+                                        <label className="custom-control-label" htmlFor="customRadioInline2">Female</label>
                                     </div>
                                 </div>
 
                                 <div className="form-group">
                                     <p>Account type</p>
-                                    <select ref="accountType" className="form-control" onChange={event => { this.setState({ accountType: event.target.value }) }} >
-                                        <option>Content Provider</option>
+                                    <select ref="accountType" defaultValue="A" className="form-control" onChange={event => {
+                                        this.setState({ accountType: event.target.value })
+                                    }} >
+                                        <option disabled value="A">--- choose your account type ---</option>
                                         <option>Subscriber</option>
+                                        <option>Content Provider</option>
                                         <option>Advertiser</option>
                                         <option>Node</option>
                                     </select>
@@ -113,7 +142,7 @@ class Register extends React.Component {
 
                                 <div className="form-group">
                                     <p>Phone number</p>
-                                    <input ref="phone" onChange={event => { this.setState({ phone: event.target.value })}} type="tel" className="form-control" placeholder="Your phone number..." />
+                                    <input ref="phone" onChange={event => { this.setState({ phone: event.target.value })}} type="number" className="form-control" placeholder="Your phone number..." />
                                 </div>
 
                                 <div className="form-group">
@@ -135,7 +164,6 @@ class Register extends React.Component {
                     </div>
                 </div>
             </div>
-
         )
     }
 }

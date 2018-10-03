@@ -31,17 +31,11 @@ class Nav extends React.Component {
 		let accountType = await fetch(`/get-account-type?wallet=${accounts[0]}`)
 		accountType = await accountType.text()
 
-		if(accountType == 'register') {
-			// ad
-		} else if(accountType == 'Content Provider') {
-
-		} else if(accountType == 'Subscriber') {
-
-		} else if(accountType == 'Advertiser') {
-
-		} else if(accountType == 'Node') {
-
-		}
+		if(accountType == 'register') this.props.redirectTo('/register')
+		else if(accountType == 'Content Provider') this.props.redirectTo('/content-provider')
+		else if(accountType == 'Subscriber') this.props.redirectTo('/subscriber')
+		else if(accountType == 'Advertiser') this.props.redirectTo('/advertiser')
+		else if(accountType == 'Node') this.props.redirectTo('/node')
 	}
 
 	render () {

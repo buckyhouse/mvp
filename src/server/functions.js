@@ -396,8 +396,7 @@ async function editFile(req, res) {
             $set: updateChanges
         })
     } catch (e) {
-        console.log('error', e)
-        return res.status(333).json({success: false, msg: '#2 There was an error updating the file, try again', error: e})
+        return res.status(333).json({success: false, msg: '#2 There was an error updating the file, try again'})
     }
 
     console.log('sending correct response')
@@ -410,10 +409,25 @@ async function getAccountType(req, res) {
     else return res.send(user.accountType)
 }
 
+async function registerNew(req, res) {
+    const body = req.body.data
+    let userData
+
+    try {
+        userData = JSON.parse(req.body.data)
+        await db.collection('users').insertOne(userData)
+    } catch(e) {
+        return res.status(333).json({success: false, msg: '#1 There was an error processing the user information, please try again'})
+    }
+
+    return res.status(200).json({success: true})
+}
+
 module.exports = {
     uploadFile,
     getFiles,
     deleteFile,
     editFile,
-    getAccountType
+    getAccountType,
+    registerNew
 }
