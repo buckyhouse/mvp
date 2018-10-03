@@ -19,6 +19,31 @@ class Nav extends React.Component {
         this.setState({account: myAccounts[0]})
     }
 
+	// db.collection('users').findOne({
+	//    wallet: wallet
+	// })
+
+	async loginRegisterButton() {
+		// Make a fetch to get what page to show it can be:
+		// node, advertiser, contentProvider, subscriber or register
+		// Then redirect to that page inside react router
+		const accounts = await web3.eth.getAccounts()
+		let accountType = await fetch(`/get-account-type?wallet=${accounts[0]}`)
+		accountType = await accountType.text()
+
+		if(accountType == 'register') {
+			// ad
+		} else if(accountType == 'Content Provider') {
+
+		} else if(accountType == 'Subscriber') {
+
+		} else if(accountType == 'Advertiser') {
+
+		} else if(accountType == 'Node') {
+
+		}
+	}
+
 	render () {
 		return (
 			<nav className="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -80,7 +105,13 @@ class Nav extends React.Component {
 							 </div>
 						</li>
 						<li className="nav-item">
-		                	<a className="nav-link" href="#">Sign Up / Login</a>
+							<a href="#" className="nav-link" role="button">Other Content</a>
+						</li>
+						<li className="nav-item">
+							{/* TODO when clicking this button, it should make a get call to the server to see if the user is registered. If so, he's redirected to the corresponding page, else he is goes to the register page */}
+		                	<a href="#" className={this.props.activePage == 'register' ? 'nav-link active' : 'nav-link'} onClick={() => {
+								this.loginRegisterButton()
+							}}>Sign Up / Login</a>
 						</li>
 						{/* Temporary button to test the content provider dashboard */}
 						<li className="nav-item">

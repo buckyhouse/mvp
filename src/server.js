@@ -22,6 +22,10 @@ app.get('/get-files', (req, res) => {
     functions.getFiles(req, res)
 })
 
+app.get('/get-account-type', (req, res) => {
+    functions.getAccountType(req, res)
+})
+
 app.post('/upload-file', (req, res) => {
     functions.uploadFile(req, res)
 })

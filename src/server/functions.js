@@ -316,8 +316,6 @@ async function getFiles(req, res) {
         limit: parseInt(req.query.c)
     }).sort({date: -1}).toArray()
 
-    console.log('files', files)
-
     res.send(files)
 }
 
@@ -406,9 +404,16 @@ async function editFile(req, res) {
     return res.status(200).json({success: true})
 }
 
+async function getAccountType(req, res) {
+    const user = await db.collection('users').findOne({ wallet: req.query.wallet })
+    if(user == null) return res.send('register')
+    else return res.send(user.accountType)
+}
+
 module.exports = {
     uploadFile,
     getFiles,
     deleteFile,
-    editFile
+    editFile,
+    getAccountType
 }

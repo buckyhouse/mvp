@@ -135,7 +135,12 @@ class ContentProviderAdd extends React.Component {
 
                                 <div className="form-group">
                                     <p>Description</p>
-                                    <textarea ref="description" onChange={event => { this.setState({description: event.target.value}) }} type="text" className="form-control" aria-describedby="inputTitle" placeholder="File description..." ></textarea>
+                                    <textarea ref="description" onChange={event => {
+                                        let descriptionArray = event.target.value.replace(/(\s\s+)/g, " ").split(' ', 50).join(' ')
+                                        this.refs.description.value = description
+
+                                        this.setState({description: event.target.value})
+                                    }} type="text" className="form-control" aria-describedby="inputTitle" placeholder="File description..." ></textarea>
                                 </div>
 
                                 <div className="form-group">
@@ -160,6 +165,7 @@ class ContentProviderAdd extends React.Component {
                                         <option>Scientific</option>
                                         <option>Comics</option>
                                         <option>Moral Stories</option>
+                                        <option>Other</option>
                                     </select>
                                 </div>
 
@@ -170,7 +176,6 @@ class ContentProviderAdd extends React.Component {
                                       this.refs.fileLabel.innerHTML = event.target.files[0].name
                                   }} type="file" className="custom-file-input" id="validatedCustomFile" required />
                                     <label ref="fileLabel" className="custom-file-label" htmlFor="validatedCustomFile">Choose file...</label>
-                                    <div className="invalid-feedback">Example invalid custom file feedback</div>
                                 </div>
 
                                 <br/>

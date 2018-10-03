@@ -5,6 +5,10 @@ import Nav from './Nav'
 import ContentProvider from './ContentProvider'
 import ContentProviderAdd from './ContentProviderAdd'
 import config from './config'
+import Register from './Register'
+import Node from './Node'
+import Advertiser from './Advertiser'
+import Subscriber from './Subscriber'
 import './index.styl'
 
 class App extends React.Component {
@@ -13,6 +17,10 @@ class App extends React.Component {
 		this.state = {
 			editFile: {}
 		}
+	}
+
+	componentDidMount() {
+		if(window.web3 == undefined) alert("Warning: you must be connected to Metamask to use this dApp. It won't work properly unless you do so. Please reload the page after connecting to Ropsten.")
 	}
 
 	redirectTo(history, location) {
@@ -41,6 +49,18 @@ class App extends React.Component {
 								this.redirectTo(history, '/content-provider/add')
 							})
 						}} />
+					)} />
+					<Route path="/subscriber" render={() => (
+						<Subscriber />
+					)} />
+					<Route path="/node" render={() => (
+						<Node />
+					)} />
+					<Route path="/advertiser" render={() => (
+						<Advertiser />
+					)} />
+					<Route path="/register" render={() => (
+						<Register />
 					)} />
 				</Switch>
 			</BrowserRouter>
