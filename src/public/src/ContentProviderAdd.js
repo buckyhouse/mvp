@@ -51,6 +51,10 @@ class ContentProviderAdd extends React.Component {
         let response
         let editOrUploadUrl
 
+        if(this.state.title.length > 100) return this.showStatus('The title is limited to 100 characters, please reduce it')
+        if(this.state.description.length > 500) return this.showStatus('The description is limited to 500 characters, please reduce it')
+        if(this.state.tags.length > 500) return this.showStatus('The total length of the tags is limited to 500 characters, please reduce it')
+
         // If there are props for the edit file, we set the edition as true
         if(Object.keys(this.props.editFile).length > 0) editedFile = true
 
@@ -125,22 +129,22 @@ class ContentProviderAdd extends React.Component {
                             <form>
                                 <div className="form-group">
                                     <p>Title</p>
-                                    <input ref="title" onChange={event => { this.setState({ title: event.target.value })}} type="text" className="form-control" aria-describedby="inputTitle" placeholder="Title of your file..." />
+                                    <input ref="title" onChange={event => { this.setState({ title: event.target.value })}} type="text" className="form-control" aria-describedby="inputTitle" placeholder="Title of your file, max 100 characters..." maxLength="100"/>
                                 </div>
 
                                 <div className="form-group">
                                     <p>Meta tags</p>
-                                    <input ref="tags" onChange={event => { this.cleanMetaTags(event.target.value) }} type="text" className="form-control" aria-describedby="inputTags" placeholder="Meta tags separated by commas..." />
+                                    <input ref="tags" onChange={event => { this.cleanMetaTags(event.target.value) }} type="text" className="form-control" aria-describedby="inputTags" placeholder="Meta tags separated by commas, without the hash icon (#)..." maxLength="500"/>
                                 </div>
 
                                 <div className="form-group">
                                     <p>Description</p>
                                     <textarea ref="description" onChange={event => {
-                                        let descriptionArray = event.target.value.replace(/(\s\s+)/g, " ").split(' ', 50).join(' ')
+                                        let description = event.target.value.replace(/(\s\s+)/g, " ").split(' ', 50).join(' ')
                                         this.refs.description.value = description
 
-                                        this.setState({description: event.target.value})
-                                    }} type="text" className="form-control" aria-describedby="inputTitle" placeholder="File description..." ></textarea>
+                                        this.setState({description: description})
+                                    }} type="text" className="form-control" aria-describedby="inputTitle" placeholder="File description, max 500 characters and 50 words..." maxLength="500"></textarea>
                                 </div>
 
                                 <div className="form-group">
