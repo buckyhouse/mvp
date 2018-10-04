@@ -9,10 +9,25 @@ let data = {
     tags: '4k,full hd,travel,peru,america,8k',
     description: 'Nulla fringilla sit amet risus a euismod. Etiam eget viverra sem. Etiam lacinia cursus nunc sed lobortis. Morbi bibendum dui id ante pharetra, et mollis enim dignissim. Morbi sed pellentesque erat.',
     category: 'Short Movies',
-    advertiserId: 1,
+    revenueModel: 'Advertising',
+    advertiserId: '1',
+    fixedPayment: '',
     fileName: 'example.mp4',
     ipfs: 'QmWdhekgeYV6nieHBypJnB77nxAxrENHK12YCYB8UGdN97',
 }
+
+let data2 = {
+    title: 'Mauris diam tellus convallis at lobortis',
+    tags: '4k,full hd,travel,peru,america,8k',
+    description: 'Nulla fringilla sit amet risus a euismod. Etiam eget viverra sem. Etiam lacinia cursus nunc sed lobortis. Morbi bibendum dui id ante pharetra, et mollis enim dignissim. Morbi sed pellentesque erat.',
+    category: 'Short Movies',
+    revenueModel: 'Fixed payment',
+    advertiserId: '',
+    fixedPayment: '5',
+    fileName: 'example.mp4',
+    ipfs: 'QmWdhekgeYV6nieHBypJnB77nxAxrENHK12YCYB8UGdN97',
+}
+
 let numberOfCopies = 50
 
 start()
@@ -20,7 +35,7 @@ start()
 async function start() {
     const database = await Mongo.connect(MongoUrl, { useNewUrlParser: true })
     db = database.db()
-    // await deleteAll()
+    await deleteAll()
     await uploadFakeData()
 }
 
@@ -28,10 +43,17 @@ async function uploadFakeData() {
     try {
         for(let i = 0; i < numberOfCopies; i++) {
             console.log('Uploading file')
-            data.date = Date.now()
-            await db.collection('ipfsFiles').insertOne(data, {
-                forceServerObjectId: true
-            })
+            if(i % 3 == 0) {
+                data2.date = Date.now()
+                await db.collection('ipfsFiles').insertOne(data2, {
+                    forceServerObjectId: true
+                })
+            } else {
+                data.date = Date.now()
+                await db.collection('ipfsFiles').insertOne(data, {
+                    forceServerObjectId: true
+                })
+            }
         }
     } catch (e) {
         console.log('Error:', e)
@@ -46,5 +68,4 @@ async function deleteAll() {
     } catch (e) {
         console.log('Error:', e)
     }
-    process.exit(0)
 }

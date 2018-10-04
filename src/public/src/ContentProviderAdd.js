@@ -14,7 +14,9 @@ class ContentProviderAdd extends React.Component {
             files: false,
             ipfsFile: false,
             advertiserId: '',
-            status: ''
+            status: '',
+            revenueModel: '',
+            fixedPayment: ''
         }
     }
 
@@ -24,15 +26,28 @@ class ContentProviderAdd extends React.Component {
             this.refs.tags.value = this.props.editFile.tags
             this.refs.description.value = this.props.editFile.description
             this.refs.category.value = this.props.editFile.category
+            this.refs.revenueModel.value = this.props.editFile.revenueModel
+            this.refs.fixedPayment.value = this.props.editFile.fixedPayment
+
+            if(this.props.editFile.revenueModel == 'Fixed payment') {
+                this.refs.fixedPaymentContainer.className = 'form-group'
+                this.refs.advertiserContainer.className = 'choose-advertiser hidden'
+            } else if(this.props.editFile.revenueModel == 'Advertising') {
+                this.refs.fixedPaymentContainer.className = 'form-group hidden'
+                this.refs.advertiserContainer.className = 'choose-advertiser'
+                this.refs.fixedPayment.value = ''
+            }
 
             this.setState({
+                _id: this.props.editFile._id,
                 title: this.props.editFile.title,
                 tags: this.props.editFile.tags,
                 description: this.props.editFile.description,
                 category: this.props.editFile.category,
                 ipfsFile: this.props.editFile.file,
                 advertiserId: this.props.editFile.advertiserId,
-                _id: this.props.editFile._id
+                revenueModel: this.props.editFile.revenueModel,
+                fixedPayment: this.props.editFile.fixedPayment
             })
         }
     }
@@ -54,6 +69,8 @@ class ContentProviderAdd extends React.Component {
         if(this.state.title.length > 100) return this.showStatus('The title is limited to 100 characters, please reduce it')
         if(this.state.description.length > 500) return this.showStatus('The description is limited to 500 characters, please reduce it')
         if(this.state.tags.length > 500) return this.showStatus('The total length of the tags is limited to 500 characters, please reduce it')
+        if(this.state.revenueModel == 'Fixed payment' && this.state.fixedPayment.length == 0) return this.showStatus('You must setup a fixed payment per view')
+        if(this.state.revenueModel == 'Advertising' && this.state.advertiserId.length == 0) return this.showStatus('You must choose an advertiser')
 
         // If there are props for the edit file, we set the edition as true
         if(Object.keys(this.props.editFile).length > 0) editedFile = true
@@ -102,12 +119,8 @@ class ContentProviderAdd extends React.Component {
         })
         this.refs.status.className = "status"
         setTimeout(() => {
-            this.refs.status.className = "status hidden"
+            if(this.refs.status) this.refs.status.className = "status hidden"
         }, 5e3)
-    }
-
-    async editFile(_id) {
-
     }
 
     render() {
@@ -126,7 +139,7 @@ class ContentProviderAdd extends React.Component {
                         <br/>
 
                         <div className="row">
-                            <form>
+                            <form className="width-100">
                                 <div className="form-group">
                                     <p>Title</p>
                                     <input ref="title" onChange={event => { this.setState({ title: event.target.value })}} type="text" className="form-control" aria-describedby="inputTitle" placeholder="Title of your file, max 100 characters..." maxLength="100"/>
@@ -185,7 +198,35 @@ class ContentProviderAdd extends React.Component {
                                 <br/>
                                 <br/>
 
-                                <div className="choose-advertiser">
+                                <div className="form-group">
+                                    <p>Revenue model</p>
+                                    <select ref="revenueModel" defaultValue="A" className="form-control" onChange={event => {
+                                        const optionSelected = event.target.value
+                                        this.setState({revenueModel: optionSelected})
+                                        if(optionSelected == 'Fixed payment') {
+                                            this.refs.fixedPaymentContainer.className = 'form-group'
+                                            this.refs.advertiserContainer.className = 'choose-advertiser hidden'
+                                            this.setState({advertiserId: ''})
+                                        } else if(optionSelected == 'Advertising') {
+                                            this.refs.fixedPaymentContainer.className = 'form-group hidden'
+                                            this.refs.advertiserContainer.className = 'choose-advertiser'
+                                            this.refs.fixedPayment.value = ''
+                                            this.setState({fixedPayment: ''})
+                                        }
+                                    }} >
+                                        <option disabled value="A">--- choose one ---</option>
+                                        <option>Fixed payment</option>
+                                        <option>Advertising</option>
+                                    </select>
+                                </div>
+
+                                <div ref="fixedPaymentContainer" className="form-group hidden">
+                                    <input ref="fixedPayment" onChange={event => {
+                                        this.setState({fixedPayment: event.target.value})
+                                    }} type="number" className="form-control" placeholder="Number of BUCKY tokens per view/download..." />
+                                </div>
+
+                                <div ref="advertiserContainer" className="choose-advertiser hidden">
                                     <p>Advertiser</p>
                                     <div className="container">
                                         <div className="row">

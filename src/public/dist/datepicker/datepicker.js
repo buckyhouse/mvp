@@ -8,7 +8,7 @@
  * Date: 2018-08-05T03:02:19.812Z
  */
 
-(function (global, factory) {
+;(function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(require('jquery')) :
   typeof define === 'function' && define.amd ? define(['jquery'], factory) :
   (factory(global.jQuery));

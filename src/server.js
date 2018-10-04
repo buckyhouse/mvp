@@ -42,10 +42,16 @@ app.get('/delete-file', (req, res) => {
     functions.deleteFile(req, res)
 })
 
-// Send the build file for sub-urls
 app.get('*/build.js', (req, res) => {
-    console.log(req.originalUrl)
     return res.sendFile(path.join(__dirname, 'public/dist/build.js'))
+})
+
+app.get('*/datepicker.js', (req, res) => {
+    return res.sendFile(path.join(__dirname, 'public/dist/datepicker', 'datepicker.js'))
+})
+
+app.get('*/datepicker.css', (req, res) => {
+    return res.sendFile(path.join(__dirname, 'public/dist/datepicker', 'datepicker.css'))
 })
 
 // Send the build file for sub-urls
