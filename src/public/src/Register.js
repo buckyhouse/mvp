@@ -9,6 +9,7 @@ class Register extends React.Component {
         this.state = {
             firstName: '',
             lastName: '',
+            dateOfBirth: '',
             accountType: '',
             wallet: '',
             gender: '',
@@ -21,12 +22,15 @@ class Register extends React.Component {
 
     async componentDidMount() {
         if(window.web3 == undefined) {
-            this.status('You must be connected to Metamask in Ropsten to register')
+            return this.status('You must be connected to Metamask in Ropsten to register, reload the page after that')
         } else {
             const accounts = await web3.eth.getAccounts()
+            if(accounts[0] == undefined) return this.status('You must be connected to Metamask in Ropsten to register, reload the page after that')
             this.refs.wallet.value = accounts[0]
             this.setState({ wallet: accounts[0] })
         }
+
+        $('[data-toggle="datepicker"]').datepicker();
     }
 
     status(message) {
@@ -40,12 +44,23 @@ class Register extends React.Component {
         }, 5e3)
     }
 
+    setStateAsync(state) {
+        return new Promise(resolve => {
+            this.setState(state, () => {
+                resolve()
+            })
+        })
+    }
+
     async registerButton() {
         const data = new FormData()
         data.append('data', JSON.stringify(this.state))
 
+        await this.setStateAsync({ dateOfBirth: this.refs.dateOfBirth.value })
+
         if(this.state.firstName.length == 0) return this.status('You must set your first name')
         if(this.state.lastName.length == 0) return this.status('You must set your last name')
+        if(this.state.dateOfBirth.length == 0) return this.status('You must set your date of birth')
         if(this.state.wallet.length == 0) return this.status('You must be connected to Metamask to set your wallet')
         if(this.state.gender.length == 0) return this.status('You must choose your gender')
         if(this.state.accountType.length == 0) return this.status('You must choose your account type')
@@ -54,8 +69,16 @@ class Register extends React.Component {
         if(this.state.country.length == 0) return this.status('You must set your country')
         if(this.state.city.length == 0) return this.status('You must set your city')
 
+        if(this.state.firstName.length >= 300) return this.status('Your first name is too long, reduce the length of it')
+        if(this.state.lastName.length >= 300) return this.status('Your last name is too long, reduce the length of it')
+        if(this.state.dateOfBirth.length >= 100) return this.status('Your date of birth is invalid please use a valid date')
+        if(this.state.email.length >= 300) return this.status('Your email is too long, reduce the length of it')
+        if(this.state.phone.length >= 300) return this.status('Your phone number is too long, reduce the length of it')
+        if(this.state.country.length >= 300) return this.status('Your country is too long, reduce the length of it')
+        if(this.state.city.length >= 300) return this.status('Your city is too long, reduce the length of it')
+
         // Check if the email is properly formatted
-        if(!/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(this.state.email)) {
+        if(!/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)+$/.test(this.state.email)) {
             return this.status('The email is not properly formatted, please use a valid email')
         }
 
@@ -101,6 +124,12 @@ class Register extends React.Component {
                                 <div className="form-group">
                                     <p>Last name</p>
                                     <input ref="lastName" onChange={event => { this.setState({ lastName: event.target.value })}} type="text" className="form-control" placeholder="Your last name..." />
+                                </div>
+
+                                <div className="form-group">
+                                    <p>Your date of birth</p>
+                                    <input ref="dateOfBirth" data-toggle="datepicker" className="form-control" placeholder="Click to choose..."/>
+                                    <div data-toggle="datepicker"></div>
                                 </div>
 
                                 <div className="form-group">
