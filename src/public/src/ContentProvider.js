@@ -33,7 +33,8 @@ class ContentProvider extends React.Component {
                     file: file.ipfs,
                     advertiserId: file.advertiserId,
                     revenueModel: file.revenueModel,
-                    fixedPayment: file.fixedPayment
+                    fixedPayment: file.fixedPayment,
+                    daysAvailable: file.daysAvailable
                 }
                 this.props.editFile(this.props.history, data)
             }} {...file} />
@@ -146,8 +147,11 @@ class Card extends React.Component {
                         <small className="col-md-3 padding-left-0">253 downloads</small>
                         <small className={(this.props.revenueModel == 'Fixed payment') ? 'col-md-4' : 'hidden'}>Pay per view of <span className="bucky-small-text">{this.props.fixedPayment} BUCKY</span></small>
                         <small className={(this.props.revenueModel == 'Fixed payment') ? 'col-md-3 padding-left-0' : 'hidden'}>Fixed Payment</small>
-                        <small className={(this.props.revenueModel == 'Advertising') ? 'col-md-4 padding-left-0' : 'hidden'}>Per per 1000 views of <span className="bucky-small-text">50 BUCKY</span></small>
+                        <small className={(this.props.revenueModel == 'Advertising') ? 'col-md-4 padding-left-0' : 'hidden'}>Pay per 1000 views of <span className="bucky-small-text">50 BUCKY</span></small>
                         <small className={(this.props.revenueModel == 'Advertising') ? 'col-md-3 padding-left-0' : 'hidden'}>Advertiser B</small>
+                    </div>
+                    <div className={(this.props.revenueModel == 'Fixed payment') ? "row" : 'hidden'}>
+                        <i>The content will be available for {this.props.daysAvailable} after payment for each user</i>
                     </div>
                 </div>
                 <div className="buttons-list">

@@ -16,7 +16,8 @@ class ContentProviderAdd extends React.Component {
             advertiserId: '',
             status: '',
             revenueModel: '',
-            fixedPayment: ''
+            fixedPayment: '',
+            daysAvailable: ''
         }
     }
 
@@ -32,6 +33,7 @@ class ContentProviderAdd extends React.Component {
             if(this.props.editFile.revenueModel == 'Fixed payment') {
                 this.refs.fixedPaymentContainer.className = 'form-group'
                 this.refs.advertiserContainer.className = 'choose-advertiser hidden'
+                this.refs.daysAvailable.value = this.props.editFile.daysAvailable
             } else if(this.props.editFile.revenueModel == 'Advertising') {
                 this.refs.fixedPaymentContainer.className = 'form-group hidden'
                 this.refs.advertiserContainer.className = 'choose-advertiser'
@@ -47,7 +49,8 @@ class ContentProviderAdd extends React.Component {
                 ipfsFile: this.props.editFile.file,
                 advertiserId: this.props.editFile.advertiserId,
                 revenueModel: this.props.editFile.revenueModel,
-                fixedPayment: this.props.editFile.fixedPayment
+                fixedPayment: this.props.editFile.fixedPayment,
+                daysAvailable: this.props.editFile.daysAvailable
             })
         }
     }
@@ -206,11 +209,13 @@ class ContentProviderAdd extends React.Component {
                                         if(optionSelected == 'Fixed payment') {
                                             this.refs.fixedPaymentContainer.className = 'form-group'
                                             this.refs.advertiserContainer.className = 'choose-advertiser hidden'
+                                            this.refs.daysAvailable.value = ''
                                             this.setState({advertiserId: ''})
                                         } else if(optionSelected == 'Advertising') {
                                             this.refs.fixedPaymentContainer.className = 'form-group hidden'
                                             this.refs.advertiserContainer.className = 'choose-advertiser'
                                             this.refs.fixedPayment.value = ''
+                                            this.refs.daysAvailable.value = ''
                                             this.setState({fixedPayment: ''})
                                         }
                                     }} >
@@ -221,9 +226,23 @@ class ContentProviderAdd extends React.Component {
                                 </div>
 
                                 <div ref="fixedPaymentContainer" className="form-group hidden">
-                                    <input ref="fixedPayment" onChange={event => {
-                                        this.setState({fixedPayment: event.target.value})
-                                    }} type="number" className="form-control" placeholder="Number of BUCKY tokens per view/download..." />
+                                    <div className="form-group">
+                                        <input ref="fixedPayment" onChange={event => {
+                                            this.setState({fixedPayment: event.target.value})
+                                        }} type="number" className="form-control" placeholder="Number of BUCKY tokens per view/download..." />
+                                    </div>
+
+                                    <div className="form-group">
+                                        <select ref="daysAvailable" defaultValue="" className="form-control" onChange={event => {
+                                            const optionSelected = event.target.value
+                                            this.setState({daysAvailable: optionSelected})
+                                        }} >
+                                            <option disabled value="">--- choose how many days the content will be available for buyers ---</option>
+                                            <option>30 days</option>
+                                            <option>60 days</option>
+                                            <option>90 days</option>
+                                        </select>
+                                    </div>
                                 </div>
 
                                 <div ref="advertiserContainer" className="choose-advertiser hidden">

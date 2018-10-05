@@ -384,7 +384,8 @@ async function editFile(req, res) {
             advertiserId: body.advertiserId,
             tags: body.tags,
             revenueModel: body.revenueModel,
-            fixedPayment: body.fixedPayment
+            fixedPayment: body.fixedPayment,
+            daysAvailable: body.daysAvailable
         }
 
         if(isEditingFiles) {
