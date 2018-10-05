@@ -1,0 +1,1 @@
+Remember to change the ContentProvider, the ContentProviderAdd, the functions.js and the uploadFakeData.js when adding a new field for the file. Specially in the function editFile() of content provider add.
