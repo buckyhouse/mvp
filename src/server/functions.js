@@ -406,8 +406,12 @@ async function editFile(req, res) {
     return res.status(200).json({success: true})
 }
 
+async function findUser(wallet) {
+    return await db.collection('users').findOne({ wallet })
+}
+
 async function getAccountType(req, res) {
-    const user = await db.collection('users').findOne({ wallet: req.query.wallet })
+    const user = await findUser(req.query.wallet)
     if(user == null) return res.send('register')
     else return res.send(user.accountType)
 }
@@ -415,15 +419,21 @@ async function getAccountType(req, res) {
 async function registerNew(req, res) {
     const body = req.body.data
     let userData
-
     try {
         userData = JSON.parse(req.body.data)
         await db.collection('users').insertOne(userData)
     } catch(e) {
         return res.status(333).json({success: false, msg: '#1 There was an error processing the user information, please try again'})
     }
-
     return res.status(200).json({success: true})
+}
+
+async function checkAccess(req, res) {
+    const user = await findUser(req.query.wallet)
+
+    if(user == null) return res.send({hasAccess: false})
+    if(req.query['account-type'] == user.accountType) return res.send({hasAccess: true})
+    return res.send({hasAccess: false})
 }
 
 module.exports = {
@@ -432,5 +442,6 @@ module.exports = {
     deleteFile,
     editFile,
     getAccountType,
-    registerNew
+    registerNew,
+    checkAccess,
 }

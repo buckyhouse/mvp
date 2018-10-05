@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import Web3 from 'web3'
 import { Link } from 'react-router-dom'
+import AccessManager from './AccessManager'
 
 class ContentProviderNav extends React.Component {
 	constructor (props) {
@@ -21,6 +22,10 @@ class ContentProviderNav extends React.Component {
 	render () {
 		return (
 			<nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+				<AccessManager
+					accountType="content-provider"
+				/>
+
 				<Link className="navbar-brand" to="/">BuckyHouse</Link>
 				<button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
 				  <span className="navbar-toggler-icon"></span>

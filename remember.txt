@@ -1,1 +1,23 @@
 Remember to change the ContentProvider, the ContentProviderAdd, the functions.js and the uploadFakeData.js when adding a new field for the file. Specially in the function editFile() of content provider add.
+
+// User object in the server and client
+user = {
+    firstName: '',
+    lastName: '',
+    dateOfBirth: '',
+    accountType: '',
+    wallet: '',
+    gender: '',
+    email: '',
+    phone: '',
+    country: '',
+    city: ''
+}
+
+// User.accountType can be:
+- subscriber
+- content-provider
+- advertiser
+- node
+
+// In the server is collection('users')

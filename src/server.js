@@ -18,6 +18,10 @@ app.use('*', (req, res, next) => {
     next()
 })
 
+app.get('/check-access', (req, res) => {
+    functions.checkAccess(req, res)
+})
+
 app.get('/get-files', (req, res) => {
     functions.getFiles(req, res)
 })
@@ -41,6 +45,7 @@ app.post('/edit-file', (req, res) => {
 app.get('/delete-file', (req, res) => {
     functions.deleteFile(req, res)
 })
+
 
 app.get('*/build.js', (req, res) => {
     return res.sendFile(path.join(__dirname, 'public/dist/build.js'))

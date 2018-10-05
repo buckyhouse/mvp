@@ -1,13 +1,17 @@
 import React from 'react'
+import AccessManager from './AccessManager'
 
 class Subscriber extends React.Component {
-    constructor() {
-        super()
+    constructor(props) {
+        super(props)
     }
 
     render() {
         return (
-            <div>This is the subscriber page</div>
+            <div>
+                <AccessManager accountType="subscriber" />
+                This is the subscriber page
+            </div>
         )
     }
 }

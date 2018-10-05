@@ -32,10 +32,10 @@ class Nav extends React.Component {
 		accountType = await accountType.text()
 
 		if(accountType == 'register') this.props.redirectTo('/register')
-		else if(accountType == 'Content Provider') this.props.redirectTo('/content-provider')
-		else if(accountType == 'Subscriber') this.props.redirectTo('/subscriber')
-		else if(accountType == 'Advertiser') this.props.redirectTo('/advertiser')
-		else if(accountType == 'Node') this.props.redirectTo('/node')
+		else if(accountType == 'content-provider') this.props.redirectTo('/content-provider')
+		else if(accountType == 'subscriber') this.props.redirectTo('/subscriber')
+		else if(accountType == 'advertiser') this.props.redirectTo('/advertiser')
+		else if(accountType == 'node') this.props.redirectTo('/node')
 	}
 
 	render () {

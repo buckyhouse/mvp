@@ -157,10 +157,10 @@ class Register extends React.Component {
                                         this.setState({ accountType: event.target.value })
                                     }} >
                                         <option disabled value="A">--- choose your account type ---</option>
-                                        <option>Subscriber</option>
-                                        <option>Content Provider</option>
-                                        <option>Advertiser</option>
-                                        <option>Node</option>
+                                        <option value="subscriber">Subscriber</option>
+                                        <option value="content-provider">Content Provider</option>
+                                        <option value="advertiser">Advertiser</option>
+                                        <option value="node">Node</option>
                                     </select>
                                 </div>
 
