@@ -149,6 +149,7 @@ class Card extends React.Component {
                         <small className={(this.props.revenueModel == 'Fixed payment') ? 'col-md-3 padding-left-0' : 'hidden'}>Fixed Payment</small>
                         <small className={(this.props.revenueModel == 'Advertising') ? 'col-md-4 padding-left-0' : 'hidden'}>Pay per 1000 views of <span className="bucky-small-text">50 BUCKY</span></small>
                         <small className={(this.props.revenueModel == 'Advertising') ? 'col-md-3 padding-left-0' : 'hidden'}>Advertiser B</small>
+                        <small className={(this.props.revenueModel == 'Free') ? 'col-md-3 padding-left-0' : 'hidden'}>Free content</small>
                     </div>
                     <div className={(this.props.revenueModel == 'Fixed payment') ? "row" : 'hidden'}>
                         <i>The content will be available for {this.props.daysAvailable} after payment for each user</i>

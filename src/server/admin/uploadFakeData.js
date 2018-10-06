@@ -29,6 +29,20 @@ let data2 = {
     ipfs: 'QmWdhekgeYV6nieHBypJnB77nxAxrENHK12YCYB8UGdN97',
 }
 
+let data3 = {
+    title: 'Mauris diam tellus convallis at lobortis',
+    tags: '4k,full hd,travel,peru,america,8k',
+    description: 'Nulla fringilla sit amet risus a euismod. Etiam eget viverra sem. Etiam lacinia cursus nunc sed lobortis. Morbi bibendum dui id ante pharetra, et mollis enim dignissim. Morbi sed pellentesque erat.',
+    category: 'Short Movies',
+    revenueModel: 'Free',
+    daysAvailable: '60 days',
+    advertiserId: '',
+    fixedPayment: '5',
+    fileName: 'example.mp4',
+    ipfs: 'QmWdhekgeYV6nieHBypJnB77nxAxrENHK12YCYB8UGdN97',
+}
+
+
 let numberOfCopies = 50
 
 start()
@@ -49,9 +63,14 @@ async function uploadFakeData() {
                 await db.collection('ipfsFiles').insertOne(data2, {
                     forceServerObjectId: true
                 })
-            } else {
+            } else if(i % 5 == 0) {
                 data.date = Date.now()
                 await db.collection('ipfsFiles').insertOne(data, {
+                    forceServerObjectId: true
+                })
+            } else {
+                data3.date = Date.now()
+                await db.collection('ipfsFiles').insertOne(data3, {
                     forceServerObjectId: true
                 })
             }

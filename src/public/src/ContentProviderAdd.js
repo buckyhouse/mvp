@@ -217,11 +217,18 @@ class ContentProviderAdd extends React.Component {
                                             this.refs.fixedPayment.value = ''
                                             this.refs.daysAvailable.value = ''
                                             this.setState({fixedPayment: ''})
+                                        } else {
+                                            this.refs.fixedPaymentContainer.className = 'form-group hidden'
+                                            this.refs.advertiserContainer.className = 'choose-advertiser hidden'
+                                            this.refs.fixedPayment.value = ''
+                                            this.refs.daysAvailable.value = ''
+                                            this.setState({fixedPayment: '', advertiserId: ''})
                                         }
                                     }} >
                                         <option disabled value="A">--- choose one ---</option>
                                         <option>Fixed payment</option>
                                         <option>Advertising</option>
+                                        <option>Free</option>
                                     </select>
                                 </div>
 
