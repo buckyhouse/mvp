@@ -34,8 +34,10 @@ class ContentProvider extends React.Component {
                     advertiserId: file.advertiserId,
                     revenueModel: file.revenueModel,
                     fixedPayment: file.fixedPayment,
-                    daysAvailable: file.daysAvailable
+                    daysAvailable: file.daysAvailable,
+                    snapshotIpfsFile: file.snapshotIpfsFile
                 }
+
                 this.props.editFile(this.props.history, data)
             }} {...file} />
         ))
@@ -128,40 +130,47 @@ class Card extends React.Component {
     render() {
         return (
             <div className="card-dashboard list-group-item list-group-item-action flex-column align-items-start">
-                <div className="d-flex w-100 justify-content-between">
-                    <h5 className="col-md-8">{this.props.title}</h5>
-                    <small className="col-md-4 text-right">3 days ago</small>
-                </div>
-                <p className="mb-1">{this.props.description}</p>
-                <div className="container">
-                    <div className="row">
-                        <a className="col-md-8 padding-left-0" href={"https://gateway.ipfs.io/ipfs/" + this.props.ipfs} target="_blank">{this.props.ipfs}</a>
+
+                <div className="card-container-dashboard">
+                    <img className="snapshot-image-content-provider" src={"https://gateway.ipfs.io/ipfs/" + this.props.snapshotIpfsFile} />
+
+                    <div className="container">
+                        <div className="row">
+                            <div className="d-flex w-100 justify-content-between">
+                                <h5 className="col-md-8">{this.props.title}</h5>
+                                <small className="col-md-4 text-right">3 days ago</small>
+                            </div>
+                            <p className="mb-1">{this.props.description}</p>
+                        </div>
+                        <div className="row">
+                            <a className="col-md-8 padding-left-0" href={"https://gateway.ipfs.io/ipfs/" + this.props.ipfs} target="_blank">{this.props.ipfs}</a>
+                        </div>
+                        <div className="row">
+                            <p className="tags-dashboard">{'#' + this.props.tags.split(',').join(' #')}</p>
+                        </div>
+                        <div className="row">
+                            <p>{this.props.category}</p>
+                        </div>
+                        <div className="row">
+                            <small className="col-md-3 padding-left-0">253 downloads</small>
+                            <small className={(this.props.revenueModel == 'Fixed payment') ? 'col-md-4' : 'hidden'}>Pay per view of <span className="bucky-small-text">{this.props.fixedPayment} BUCKY</span></small>
+                            <small className={(this.props.revenueModel == 'Fixed payment') ? 'col-md-3 padding-left-0' : 'hidden'}>Fixed Payment</small>
+                            <small className={(this.props.revenueModel == 'Advertising') ? 'col-md-4 padding-left-0' : 'hidden'}>Pay per 1000 views of <span className="bucky-small-text">50 BUCKY</span></small>
+                            <small className={(this.props.revenueModel == 'Advertising') ? 'col-md-3 padding-left-0' : 'hidden'}>Advertiser B</small>
+                            <small className={(this.props.revenueModel == 'Free') ? 'col-md-3 padding-left-0' : 'hidden'}>Free content</small>
+                        </div>
+                        <div className={(this.props.revenueModel == 'Fixed payment') ? "row" : 'hidden'}>
+                            <i>The content will be available for {this.props.daysAvailable} after payment for each user</i>
+                        </div>
                     </div>
-                    <div className="row">
-                        <p className="tags-dashboard">{'#' + this.props.tags.split(',').join(' #')}</p>
+                    <div className="buttons-list">
+                        <button className="btn btn-outline-primary" onClick={() => {
+                            this.props.editFile()
+                        }}>Edit</button>
+                        <button className="btn btn-outline-secondary" data-toggle="modal" data-target="#delete-modal" onClick={() => {
+                            this.props.updateState()
+                        }}>Delete</button>
                     </div>
-                    <div className="row">
-                        <p>{this.props.category}</p>
-                    </div>
-                    <div className="row">
-                        <small className="col-md-3 padding-left-0">253 downloads</small>
-                        <small className={(this.props.revenueModel == 'Fixed payment') ? 'col-md-4' : 'hidden'}>Pay per view of <span className="bucky-small-text">{this.props.fixedPayment} BUCKY</span></small>
-                        <small className={(this.props.revenueModel == 'Fixed payment') ? 'col-md-3 padding-left-0' : 'hidden'}>Fixed Payment</small>
-                        <small className={(this.props.revenueModel == 'Advertising') ? 'col-md-4 padding-left-0' : 'hidden'}>Pay per 1000 views of <span className="bucky-small-text">50 BUCKY</span></small>
-                        <small className={(this.props.revenueModel == 'Advertising') ? 'col-md-3 padding-left-0' : 'hidden'}>Advertiser B</small>
-                        <small className={(this.props.revenueModel == 'Free') ? 'col-md-3 padding-left-0' : 'hidden'}>Free content</small>
-                    </div>
-                    <div className={(this.props.revenueModel == 'Fixed payment') ? "row" : 'hidden'}>
-                        <i>The content will be available for {this.props.daysAvailable} after payment for each user</i>
-                    </div>
-                </div>
-                <div className="buttons-list">
-                    <button className="btn btn-outline-primary" onClick={() => {
-                        this.props.editFile()
-                    }}>Edit</button>
-                    <button className="btn btn-outline-secondary" data-toggle="modal" data-target="#delete-modal" onClick={() => {
-                        this.props.updateState()
-                    }}>Delete</button>
                 </div>
             </div>
         )

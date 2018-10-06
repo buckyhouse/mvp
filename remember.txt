@@ -1,4 +1,8 @@
-Remember to change the ContentProvider, the ContentProviderAdd, the functions.js and the uploadFakeData.js when adding a new field for the file. Specially in the function editFile() of content provider add.
+// Remember to change the ContentProvider, the ContentProviderAdd, the functions.js and the uploadFakeData.js when adding a new field for the file. Specially in the function editFile() of content provider add.
+- ContentProvider inside the function getFiles()
+- ContentProviderAdd inside the render(), uploadFile() and componentDidMount()
+- functions.js
+
 
 // User object in the server and client
 user = {
@@ -12,6 +16,43 @@ user = {
     phone: '',
     country: '',
     city: ''
+}
+
+// File object in client
+file = {
+    _id: '',
+    title: '',
+    tags: '',
+    description: '',
+    category: '',
+    file: '',
+    ipfsFile: '',
+    advertiserId: '',
+    status: '', // This is just to display information to the user
+    revenueModel: '',
+    fixedPayment: '',
+    daysAvailable: '',
+    snapshotFiles: '',
+    snapshotIpfsFile: ''
+}
+
+// File in the server (only a few differences at the end)
+file = {
+    title: '',
+    tags: '',
+    description: '',
+    category: '',
+    ipfsFile: '',
+    advertiserId: '',
+    status: '',
+    revenueModel: '',
+    fixedPayment: '',
+    daysAvailable: '',
+    snapshotIpfsFile: '',
+    fileName: '',
+    snapshotFileName: '',
+    ipfs: '',
+    date: 1538866207886
 }
 
 // User.accountType can be:

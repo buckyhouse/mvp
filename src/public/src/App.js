@@ -94,7 +94,7 @@ class Home extends React.Component {
 		const response = await fetch(`${uploadUrl}/get-files?c=10`)
 		let res = await response.json()
 		let cards = res.map((file, i) => (
-			<Card key={i} className="col-md" title={file.title} description={file.description} ipfs={file.ipfs} />
+			<Card key={i} className="col-md" title={file.title} description={file.description} ipfs={file.ipfs} snapshotIpfsFile={file.snapshotIpfsFile}/>
 		))
 
 		this.setState({cards})
@@ -122,42 +122,6 @@ class Home extends React.Component {
 					</div>
 					<br/>
 					<br/>
-					<div className="row">
-						<h3 className="small-margin-left">Music</h3>
-					</div>
-					<div className="row">
-						<Card className="col-md"/>
-						<Card className="col-md"/>
-						<Card className="col-md"/>
-						<Card className="col-md"/>
-						<Card className="col-md"/>
-					</div>
-					<br/>
-					<br/>
-					<div className="row">
-						<h3 className="small-margin-left">Animation</h3>
-					</div>
-					<div className="row">
-						<Card className="col-md"/>
-						<Card className="col-md"/>
-						<Card className="col-md"/>
-						<Card className="col-md"/>
-						<Card className="col-md"/>
-					</div>
-					<br/>
-					<br/>
-					<div className="row">
-						<h3 className="small-margin-left">E-books</h3>
-					</div>
-					<div className="row">
-						<Card className="col-md"/>
-						<Card className="col-md"/>
-						<Card className="col-md"/>
-						<Card className="col-md"/>
-						<Card className="col-md"/>
-					</div>
-					<br/>
-					<br/>
 					<br/>
 				</div>
 			</div>
@@ -173,7 +137,7 @@ class Card extends React.Component {
 	render() {
 		return (
 			<div className={`card card-container ${this.props.className}`}>
-				<img className="card-img-top" src="imgs/placeholder.png" />
+				<img className="card-img-top" src={'https://gateway.ipfs.io/ipfs/' + this.props.snapshotIpfsFile} />
 				<div className="card-body">
 					<h4>{this.props.title}</h4>
 					<p>{this.props.description}</p>

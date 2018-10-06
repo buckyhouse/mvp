@@ -17,7 +17,9 @@ class ContentProviderAdd extends React.Component {
             status: '',
             revenueModel: '',
             fixedPayment: '',
-            daysAvailable: ''
+            daysAvailable: '',
+            snapshotFiles: false,
+            snapshotIpfsFile: false
         }
     }
 
@@ -50,7 +52,8 @@ class ContentProviderAdd extends React.Component {
                 advertiserId: this.props.editFile.advertiserId,
                 revenueModel: this.props.editFile.revenueModel,
                 fixedPayment: this.props.editFile.fixedPayment,
-                daysAvailable: this.props.editFile.daysAvailable
+                daysAvailable: this.props.editFile.daysAvailable,
+                snapshotIpfsFile: this.props.editFile.snapshotIpfsFile
             })
         }
     }
@@ -86,6 +89,15 @@ class ContentProviderAdd extends React.Component {
         } else if(!editedFile && !this.state.files) {
             return showStatus('Error you must select a file to upload')
         }
+
+        if(this.state.snapshotFiles) {
+            data.append('snapshotFile', this.state.snapshotFiles[0])
+            delete stateCopy.snapshotFiles
+            stateCopy.snapshotFileName = this.state.snapshotFiles[0].name
+        } else if(!editedFile && !this.state.snapshotFiles) {
+            return showStatus('Error you must select a snapshot to upload for your file')
+        }
+
         data.append('stateObject', JSON.stringify(stateCopy))
 
         if(window.location.origin == config.productionDomain) uploadUrl = config.productionDomain
@@ -196,6 +208,18 @@ class ContentProviderAdd extends React.Component {
                                       this.refs.fileLabel.innerHTML = event.target.files[0].name
                                   }} type="file" className="custom-file-input" id="validatedCustomFile" required />
                                     <label ref="fileLabel" className="custom-file-label" htmlFor="validatedCustomFile">Choose file...</label>
+                                </div>
+
+                                <br/>
+                                <br/>
+
+                                <p>Snapshot image</p>
+                                <div className="custom-file">
+                                    <input onChange={event => {
+                                      this.setState({snapshotFiles: event.target.files})
+                                      this.refs.snapshotLabel.innerHTML = event.target.files[0].name
+                                  }} type="file" className="custom-file-input" id="validatedCustomFile2" required />
+                                    <label ref="snapshotLabel" className="custom-file-label" htmlFor="validatedCustomFile2">Choose file...</label>
                                 </div>
 
                                 <br/>

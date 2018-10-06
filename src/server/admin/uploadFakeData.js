@@ -14,6 +14,7 @@ let data = {
     fixedPayment: '',
     fileName: 'example.mp4',
     ipfs: 'QmWdhekgeYV6nieHBypJnB77nxAxrENHK12YCYB8UGdN97',
+    snapshotIpfsFile: 'QmS9jqmaDZGiJyteUXPWJCnK6rWAy3Y2XzTnoSL4MXvrTL',
 }
 
 let data2 = {
@@ -27,6 +28,7 @@ let data2 = {
     fixedPayment: '5',
     fileName: 'example.mp4',
     ipfs: 'QmWdhekgeYV6nieHBypJnB77nxAxrENHK12YCYB8UGdN97',
+    snapshotIpfsFile: 'QmS9jqmaDZGiJyteUXPWJCnK6rWAy3Y2XzTnoSL4MXvrTL',
 }
 
 let data3 = {
@@ -40,6 +42,7 @@ let data3 = {
     fixedPayment: '5',
     fileName: 'example.mp4',
     ipfs: 'QmWdhekgeYV6nieHBypJnB77nxAxrENHK12YCYB8UGdN97',
+    snapshotIpfsFile: 'QmS9jqmaDZGiJyteUXPWJCnK6rWAy3Y2XzTnoSL4MXvrTL',
 }
 
 

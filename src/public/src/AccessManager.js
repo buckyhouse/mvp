@@ -11,7 +11,6 @@ class AccessManager extends React.Component {
 
     async checkAccess() {
         const account = (await web3.eth.getAccounts())[0]
-        console.log(account)
 
         let response = await fetch(`/check-access?account-type=${this.props.accountType}&wallet=${account}`)
         response = await response.json()

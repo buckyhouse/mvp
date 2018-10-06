@@ -256,14 +256,21 @@ function publishFileIpfs(file) {
 async function uploadFile(req, res) {
     let body = JSON.parse(req.body.stateObject)
     const file = req.files.file
+    const snapshotFile = req.files.snapshotFile
+
     const ipfsHash = await publishFileIpfs(file.data)
+    const snapshotIpfsHash = await publishFileIpfs(snapshotFile.data)
     const pinResult = await ipfs.pin.add(ipfsHash[0].hash)
+    const pinResult2 = await ipfs.pin.add(snapshotIpfsHash[0].hash)
     console.log('published hash', ipfsHash[0].hash)
+    console.log('published hash', snapshotIpfsHash[0].hash)
     body.ipfs = ipfsHash[0].hash
+    body.snapshotIpfsFile = snapshotIpfsHash[0].hash
     body.date = Date.now()
 
     // If the file is a .mov or .mp4 generate a snapshot
     file.name = file.name.replace(' ', '-')
+    snapshotFile.name = snapshotFile.name.replace(' ', '-')
 
     try {
         // Upload the file to IPFS and then add it to the ting
@@ -271,19 +278,9 @@ async function uploadFile(req, res) {
             await file.mv(path.join(__dirname, 'uploads', file.name))
         }
 
-        const fileExtension = file.name.substring(file.name.length - 3, file.name.length)
-        const videoPathAndName = path.join(__dirname, '/uploads', file.name)
-        let snapshotPathAndName = path.join(__dirname, '/snapshots', file.name)
-        try {
-            if(fileExtension == 'mov') {
-                snapshotPathAndName = snapshotPathAndName.replace(/(\.mov)+/, '.jpg')
-                await generateSnapshot(videoPathAndName, snapshotPathAndName)
-            } else if(fileExtension == 'mp4') {
-                snapshotPathAndName = snapshotPathAndName.replace(/(\.mp4)+/, '.jpg')
-                await generateSnapshot(videoPathAndName, snapshotPathAndName)
-            }
-        } catch(e) {
-            console.log('Could not generate snapshot', e)
+        // Upload the file to IPFS and then add it to the ting
+        if(snapshotFile.name.substring(snapshotFile.name.length - 2, snapshotFile.name.length) != 'js') {
+            await snapshotFile.mv(path.join(__dirname, 'uploads', snapshotFile.name))
         }
 
         await db.collection('ipfsFiles').insertOne(body)
@@ -333,42 +330,45 @@ async function deleteFile(req, res) {
 
 async function editFile(req, res) {
     let body = JSON.parse(req.body.stateObject)
+    const file = req.files.file
+    const snapshotFile = req.files.snapshotFile
     let isEditingFiles = true
 
     if(!req.files) isEditingFiles = false
 
     // Upload a new file if that's the case
     if(isEditingFiles) {
-        const file = req.files.file
-        const ipfsHash = await publishFileIpfs(file.data)
-        const pinResult = await ipfs.pin.add(ipfsHash[0].hash)
-        console.log('published hash', ipfsHash[0].hash)
-        body.ipfs = ipfsHash[0].hash
-        body.date = Date.now()
+        if(file) {
+            const ipfsHash = await publishFileIpfs(file.data)
+            const pinResult = await ipfs.pin.add(ipfsHash[0].hash)
+            console.log('published hash', ipfsHash[0].hash)
+            body.ipfs = ipfsHash[0].hash
+            file.name = file.name.replace(' ', '-')
+            body.date = Date.now()
+        }
 
-        // If the file is a .mov or .mp4 generate a snapshot
-        file.name = file.name.replace(' ', '-')
+        if(snapshotFile) {
+            const snapshotIpfsHash = await publishFileIpfs(snapshotFile.data)
+            const pinResult2 = await ipfs.pin.add(snapshotIpfsHash[0].hash)
+            console.log('published hash', snapshotIpfsHash[0].hash)
+            body.snapshotIpfsFile = snapshotIpfsHash[0].hash
+            snapshotFile.name = snapshotFile.name.replace(' ', '-')
+            body.date = Date.now()
+        }
 
         try {
-            // Upload the file to IPFS and then add it to the ting
-            if(file.name.substring(file.name.length - 2, file.name.length) != 'js') {
-                await file.mv(path.join(__dirname, 'uploads', file.name))
+            if(file) {
+                // Upload the file to IPFS and then add it to the ting
+                if(file.name.substring(file.name.length - 2, file.name.length) != 'js') {
+                    await file.mv(path.join(__dirname, 'uploads', file.name))
+                }
             }
 
-            const fileExtension = file.name.substring(file.name.length - 3, file.name.length)
-            const videoPathAndName = path.join(__dirname, '/uploads', file.name)
-            let snapshotPathAndName = path.join(__dirname, '/snapshots', file.name)
-
-            try {
-                if(fileExtension == 'mov') {
-                    snapshotPathAndName = snapshotPathAndName.replace(/(\.mov)+/, '.jpg')
-                    await generateSnapshot(videoPathAndName, snapshotPathAndName)
-                } else if(fileExtension == 'mp4') {
-                    snapshotPathAndName = snapshotPathAndName.replace(/(\.mp4)+/, '.jpg')
-                    await generateSnapshot(videoPathAndName, snapshotPathAndName)
+            if(snapshotFile) {
+                // Upload the file to IPFS and then add it to the ting
+                if(snapshotFile.name.substring(snapshotFile.name.length - 2, snapshotFile.name.length) != 'js') {
+                    await snapshotFile.mv(path.join(__dirname, 'uploads', snapshotFile.name))
                 }
-            } catch(e) {
-                console.log('Could not generate snapshot', e)
             }
         } catch (e) {
             return res.status(333).json({success: false, msg: '#1 There was an error editing the file, try again', error: e})
@@ -389,8 +389,15 @@ async function editFile(req, res) {
         }
 
         if(isEditingFiles) {
-            updateChanges.ipfs = body.ipfs
-            updateChanges.fileName = body.fileName
+            if(file) {
+                updateChanges.ipfs = body.ipfs
+                updateChanges.fileName = body.fileName
+            }
+
+            if(snapshotFile) {
+                updateChanges.snapshotIpfsFile = body.snapshotIpfsFile
+                updateChanges.snapshotFileName = snapshotFile.name
+            }
         }
 
         await db.collection('ipfsFiles').updateOne({
