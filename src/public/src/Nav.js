@@ -102,14 +102,9 @@ class Nav extends React.Component {
 							<a href="#" className="nav-link" role="button">Other Content</a>
 						</li>
 						<li className="nav-item">
-							{/* TODO when clicking this button, it should make a get call to the server to see if the user is registered. If so, he's redirected to the corresponding page, else he is goes to the register page */}
 		                	<a href="#" className={this.props.activePage == 'register' ? 'nav-link active' : 'nav-link'} onClick={() => {
 								this.loginRegisterButton()
 							}}>Sign Up / Login</a>
-						</li>
-						{/* Temporary button to test the content provider dashboard */}
-						<li className="nav-item">
-		                	<Link className="nav-link" to="/content-provider">Content Provider</Link>
 						</li>
 					</ul>
 				</div>

@@ -130,8 +130,8 @@ class Home extends React.Component {
 }
 
 class Card extends React.Component {
-	constructor() {
-		super()
+	constructor(props) {
+		super(props)
 	}
 
 	render() {

@@ -1,7 +1,8 @@
 // Remember to change the ContentProvider, the ContentProviderAdd, the functions.js and the uploadFakeData.js when adding a new field for the file. Specially in the function editFile() of content provider add.
 - ContentProvider inside the function getFiles()
 - ContentProviderAdd inside the render(), uploadFile() and componentDidMount()
-- functions.js
+- functions.js in uploadFile() and editFile()
+- uploadFakeData.js in data objects
 
 
 // User object in the server and client

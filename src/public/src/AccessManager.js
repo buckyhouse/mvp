@@ -15,7 +15,7 @@ class AccessManager extends React.Component {
         let response = await fetch(`/check-access?account-type=${this.props.accountType}&wallet=${account}`)
         response = await response.json()
 
-        if(!response.hasAccess) window.location = '/'
+        if(!response.hasAccess) window.location = '/register?not-logged'
     }
 
     render() {

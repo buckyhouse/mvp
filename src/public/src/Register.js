@@ -30,6 +30,10 @@ class Register extends React.Component {
             this.setState({ wallet: accounts[0] })
         }
 
+        if(window.location.search.includes('not-logged')) {
+            this.status('You must be logged or registered to access that page. Make sure your Metamask account is unlocked.')
+        }
+
         $('[data-toggle="datepicker"]').datepicker();
     }
 
