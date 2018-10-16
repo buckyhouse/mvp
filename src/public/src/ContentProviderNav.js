@@ -26,7 +26,7 @@ class ContentProviderNav extends React.Component {
 					accountType="content-provider"
 				/>
 
-				<Link className="navbar-brand" to="/">BuckyHouse</Link>
+				<Link className="navbar-brand" to="/"><img className="logo" src="imgs/logo_3.png" /></Link>
 				<button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
 				  <span className="navbar-toggler-icon"></span>
 				</button>

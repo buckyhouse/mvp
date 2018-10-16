@@ -41,7 +41,7 @@ class Nav extends React.Component {
 	render () {
 		return (
 			<nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-				<Link className="navbar-brand" to="/">BuckyHouse</Link>
+				<Link className="navbar-brand" to="/"><img className="logo" src="imgs/logo_1.png" /></Link>
 				<button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
 				  <span className="navbar-toggler-icon"></span>
 				</button>
